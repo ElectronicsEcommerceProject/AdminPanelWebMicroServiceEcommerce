@@ -68,247 +68,439 @@
 │   ├── features/                    // 📁 PURPOSE: Feature modules - each feature is self-contained with pages, components, API
 │   │   │
 │   │   ├── Dashboard/               // 📊 FEATURE: Dashboard Overview - Main landing page after login
+│   │   │   │                        // BACKEND: Aggregates data from ALL microservices
+│   │   │   │                        // EXAMPLE: Shows total users (from User Service), total orders (from Order Service), revenue (from Payment Service)
 │   │   │   ├── pages/               // 📁 PURPOSE: Full-page views for this feature
 │   │   │   │   └── DashboardPage.jsx // 📄 PURPOSE: Main dashboard page showing overview stats, charts, recent activity
+│   │   │   │                        // EXAMPLE: Displays 4 stat cards at top (users, orders, revenue, products), sales chart in middle, recent orders table at bottom
 │   │   │   ├── components/          // 📁 PURPOSE: UI components specific to Dashboard feature
 │   │   │   │   ├── OverviewStats.jsx // 📄 PURPOSE: Display key metrics cards (Total Users, Revenue, Orders)
+│   │   │   │                        // EXAMPLE: Shows "Total Users: 1,234" in blue card, "Revenue: ₹45,678" in green card, "Orders: 567" in orange card
 │   │   │   │   ├── RecentOrders.jsx  // 📄 PURPOSE: Show last 10 orders in table format
+│   │   │   │                        // EXAMPLE: Table with columns: Order ID, Customer Name, Amount, Status, Date. Click row to view order details
 │   │   │   │   ├── RecentUsers.jsx   // 📄 PURPOSE: Show recently registered users
+│   │   │   │                        // EXAMPLE: List showing "John Doe joined 2 hours ago", "Jane Smith joined 5 hours ago" with profile pictures
 │   │   │   │   ├── SalesChart.jsx    // 📄 PURPOSE: Line/bar chart showing sales trends over time
+│   │   │   │                        // EXAMPLE: Line chart with X-axis showing dates (Jan, Feb, Mar) and Y-axis showing sales amount (₹10k, ₹20k, ₹30k)
 │   │   │   │   ├── RevenueChart.jsx  // 📄 PURPOSE: Chart displaying revenue analytics
+│   │   │   │                        // EXAMPLE: Bar chart comparing monthly revenue: Jan ₹50k, Feb ₹75k, Mar ₹90k
 │   │   │   │   ├── TopProducts.jsx   // 📄 PURPOSE: List of best-selling products
+│   │   │   │                        // EXAMPLE: Shows "1. iPhone 15 - 150 sold", "2. Samsung Galaxy - 120 sold", "3. MacBook Pro - 80 sold"
 │   │   │   │   └── LowStockAlert.jsx // 📄 PURPOSE: Widget showing products with low stock levels
+│   │   │   │                        // EXAMPLE: Red alert box showing "iPhone 15 (128GB Black) - Only 5 left!", "AirPods Pro - Only 3 left!"
 │   │   │   ├── api/                 // 📁 PURPOSE: API calls specific to Dashboard
 │   │   │   │   └── dashboardApi.js  // 📄 PURPOSE: Functions to fetch dashboard data from backend
+│   │   │   │                        // EXAMPLE: getDashboardStats() calls GET /api/dashboard/stats and returns {totalUsers: 1234, totalOrders: 567, revenue: 45678}
 │   │   │   └── index.js             // 📄 PURPOSE: Export all Dashboard components for easy imports
+│   │   │                            // EXAMPLE: Allows other files to import like: import { DashboardPage, OverviewStats } from 'features/Dashboard'
 │   │   │
-│   │   ├── UserManagement/          // User Management (Service 1: User Management)
+│   │   ├── UserManagement/          // 👥 FEATURE: User Management (Service 1: User Management - Port 3001)
+│   │   │   │                        // BACKEND: Manages User, Address, Owner models
+│   │   │   │                        // EXAMPLE: Admin can view all users, create new users, edit user details, ban users, manage addresses
 │   │   │   ├── pages/
-│   │   │   │   ├── UserListPage.jsx      // All users list with filters
-│   │   │   │   ├── UserDetailsPage.jsx   // View user details
-│   │   │   │   ├── UserEditPage.jsx      // Edit user
-│   │   │   │   ├── AddressListPage.jsx   // User addresses management
-│   │   │   │   └── OwnerListPage.jsx     // Store owners list
+│   │   │   │   ├── UserListPage.jsx      // 📄 PURPOSE: All users list with filters (search, role, status)
+│   │   │   │   │                        // EXAMPLE: Table showing all users with columns: ID, Name, Email, Role, Status, Actions. Search bar at top, filter by role dropdown
+│   │   │   │   ├── UserDetailsPage.jsx   // 📄 PURPOSE: View single user's complete information
+│   │   │   │   │                        // EXAMPLE: Shows user profile (name, email, phone), order history, addresses, account status, registration date
+│   │   │   │   ├── UserEditPage.jsx      // 📄 PURPOSE: Edit user information
+│   │   │   │   │                        // EXAMPLE: Form with fields: Name, Email, Phone, Role dropdown, Status toggle. Save button updates user in database
+│   │   │   │   ├── AddressListPage.jsx   // 📄 PURPOSE: Manage user's delivery addresses
+│   │   │   │   │                        // EXAMPLE: Shows all addresses for a user: "Home - 123 Main St, Delhi", "Office - 456 Park Ave, Mumbai". Add/Edit/Delete buttons
+│   │   │   │   └── OwnerListPage.jsx     // 📄 PURPOSE: List of store owners (retailers)
+│   │   │   │                        // EXAMPLE: Table showing store owners with their store names, approval status, total sales
 │   │   │   ├── components/
-│   │   │   │   ├── UserForm.jsx          // User create/edit form
-│   │   │   │   ├── UserTable.jsx         // Users data table
-│   │   │   │   ├── UserStatusBadge.jsx   // Status badge (active, inactive, banned)
-│   │   │   │   ├── BanUserModal.jsx      // Ban user modal with reason
-│   │   │   │   ├── UserRoleSelector.jsx  // Role selector (customer, retailer, admin)
-│   │   │   │   ├── AddressForm.jsx       // Address form
-│   │   │   │   ├── AddressCard.jsx       // Address display card
-│   │   │   │   └── UserActions.jsx       // Action dropdown (edit, ban, delete)
+│   │   │   │   ├── UserForm.jsx          // 📄 PURPOSE: Reusable form for creating/editing users
+│   │   │   │   │                        // EXAMPLE: Form with inputs: Name, Email, Password, Phone, Role selector. Used in both create and edit pages
+│   │   │   │   ├── UserTable.jsx         // 📄 PURPOSE: Reusable table component to display users
+│   │   │   │   │                        // EXAMPLE: Table with sortable columns, pagination (10 users per page), click row to view details
+│   │   │   │   ├── UserStatusBadge.jsx   // 📄 PURPOSE: Colored badge showing user status
+│   │   │   │   │                        // EXAMPLE: Green badge "Active", Gray badge "Inactive", Red badge "Banned"
+│   │   │   │   ├── BanUserModal.jsx      // 📄 PURPOSE: Popup dialog to ban user with reason
+│   │   │   │   │                        // EXAMPLE: Modal with text area "Reason for ban" and "Ban User" button. Shows "Are you sure?" confirmation
+│   │   │   │   ├── UserRoleSelector.jsx  // 📄 PURPOSE: Dropdown to select user role
+│   │   │   │   │                        // EXAMPLE: Dropdown with options: Customer, Retailer, Admin. Used in user creation/edit forms
+│   │   │   │   ├── AddressForm.jsx       // 📄 PURPOSE: Form to add/edit delivery address
+│   │   │   │   │                        // EXAMPLE: Form with fields: Address Line 1, Address Line 2, City, State, Pincode, Phone, Address Type (Home/Office)
+│   │   │   │   ├── AddressCard.jsx       // 📄 PURPOSE: Display single address in card format
+│   │   │   │   │                        // EXAMPLE: Card showing "Home" label, full address, phone number, Edit and Delete buttons
+│   │   │   │   └── UserActions.jsx       // 📄 PURPOSE: Dropdown menu with user actions
+│   │   │   │                        // EXAMPLE: Three-dot menu with options: View Details, Edit, Ban User, Delete User
 │   │   │   ├── api/
-│   │   │   │   ├── userApi.js       // API: getAllUsers(), createUser(), updateUser(), banUser(), deleteUser()
-│   │   │   │   ├── addressApi.js    // API: getUserAddresses(), createAddress(), updateAddress(), deleteAddress()
-│   │   │   │   └── ownerApi.js      // API: getAllOwners(), getOwnerDetails(), updateOwner()
-│   │   │   └── index.js
+│   │   │   │   ├── userApi.js       // 📄 PURPOSE: API functions for user CRUD operations
+│   │   │   │   │                        // EXAMPLE: getAllUsers() calls GET /api/users, createUser(data) calls POST /api/users, banUser(id, reason) calls POST /api/users/:id/ban
+│   │   │   │   ├── addressApi.js    // 📄 PURPOSE: API functions for address operations
+│   │   │   │   │                        // EXAMPLE: getUserAddresses(userId) calls GET /api/users/:id/addresses, returns array of addresses
+│   │   │   │   └── ownerApi.js      // 📄 PURPOSE: API functions for store owner operations
+│   │   │   │                        // EXAMPLE: getAllOwners() calls GET /api/owners, returns list of retailers with their store information
+│   │   │   └── index.js             // 📄 PURPOSE: Export all UserManagement components
+│   │   │                            // EXAMPLE: Allows imports like: import { UserListPage, UserForm } from 'features/UserManagement'
 │   │   │
-│   │   ├── ProductManagement/       // Product Catalog (Service 2: Product Catalog)
+│   │   ├── ProductManagement/       // 📦 FEATURE: Product Catalog (Service 2: Product Catalog - Port 3002)
+│   │   │   │                        // BACKEND: Manages Product, Category, Brand, ProductVariant, Attribute, Media models
+│   │   │   │                        // EXAMPLE: Admin can add products (iPhone 15), create variants (128GB Black, 256GB White), upload images, organize in categories
 │   │   │   ├── pages/
-│   │   │   │   ├── ProductListPage.jsx       // All products list
-│   │   │   │   ├── ProductCreatePage.jsx     // Create new product
-│   │   │   │   ├── ProductEditPage.jsx       // Edit product
-│   │   │   │   ├── ProductDetailsPage.jsx    // View product details
-│   │   │   │   ├── CategoryListPage.jsx      // Categories management
-│   │   │   │   ├── CategoryCreatePage.jsx    // Create category
-│   │   │   │   ├── BrandListPage.jsx         // Brands management
-│   │   │   │   ├── BrandCreatePage.jsx       // Create brand
-│   │   │   │   ├── AttributeListPage.jsx     // Attributes management (Color, Size, etc.)
-│   │   │   │   └── VariantManagementPage.jsx // Product variants management
+│   │   │   │   ├── ProductListPage.jsx       // 📄 PURPOSE: Display all products with search and filters
+│   │   │   │   │                        // EXAMPLE: Table showing products with image, name, price, category, brand, stock status. Filter by category/brand, search by name
+│   │   │   │   ├── ProductCreatePage.jsx     // 📄 PURPOSE: Form to create new product
+│   │   │   │   │                        // EXAMPLE: Form with fields: Product Name, Description, Base Price, Category dropdown, Brand dropdown, Upload Images button
+│   │   │   │   ├── ProductEditPage.jsx       // 📄 PURPOSE: Edit existing product details
+│   │   │   │   │                        // EXAMPLE: Pre-filled form with current product data, can update name, price, category, add/remove images
+│   │   │   │   ├── ProductDetailsPage.jsx    // 📄 PURPOSE: View complete product information
+│   │   │   │   │                        // EXAMPLE: Shows product images gallery, description, price, all variants (128GB, 256GB), stock levels, sales stats
+│   │   │   │   ├── CategoryListPage.jsx      // 📄 PURPOSE: Manage product categories
+│   │   │   │   │                        // EXAMPLE: Tree view showing "Electronics > Mobiles > Smartphones", "Electronics > Laptops". Add/Edit/Delete buttons
+│   │   │   │   ├── CategoryCreatePage.jsx    // 📄 PURPOSE: Create new category
+│   │   │   │   │                        // EXAMPLE: Form with fields: Category Name, Parent Category dropdown, Target Role (customer/retailer/both)
+│   │   │   │   ├── BrandListPage.jsx         // 📄 PURPOSE: Manage product brands
+│   │   │   │   │                        // EXAMPLE: Table showing brands: Apple, Samsung, Sony with logo, description, total products. Add New Brand button
+│   │   │   │   ├── BrandCreatePage.jsx       // 📄 PURPOSE: Create new brand
+│   │   │   │   │                        // EXAMPLE: Form with fields: Brand Name, Logo Upload, Description
+│   │   │   │   ├── AttributeListPage.jsx     // 📄 PURPOSE: Manage product attributes (Color, Size, Storage)
+│   │   │   │   │                        // EXAMPLE: List showing "Color" attribute with values (Black, White, Blue), "Storage" with values (64GB, 128GB, 256GB)
+│   │   │   │   └── VariantManagementPage.jsx // 📄 PURPOSE: Manage product variants (different combinations)
+│   │   │   │                        // EXAMPLE: For iPhone 15, shows variants: "128GB Black - ₹79,999 - Stock: 50", "256GB White - ₹89,999 - Stock: 30"
 │   │   │   ├── components/
-│   │   │   │   ├── ProductForm.jsx           // Product form (name, description, price, category, brand)
-│   │   │   │   ├── ProductTable.jsx          // Products data table
-│   │   │   │   ├── VariantForm.jsx           // Variant form (price, stock, SKU, attributes)
-│   │   │   │   ├── VariantTable.jsx          // Variants table with inline editing
-│   │   │   │   ├── MediaUploader.jsx         // Product media uploader (images/videos)
-│   │   │   │   ├── MediaGallery.jsx          // Media gallery display
-│   │   │   │   ├── CategoryTree.jsx          // Hierarchical category tree
-│   │   │   │   ├── CategoryForm.jsx          // Category form (name, parent, target_role)
-│   │   │   │   ├── BrandForm.jsx             // Brand form
-│   │   │   │   ├── AttributeForm.jsx         // Attribute form (name, data_type)
-│   │   │   │   ├── AttributeValueForm.jsx    // Attribute value form
-│   │   │   │   ├── ProductStatusToggle.jsx   // Active/inactive toggle
-│   │   │   │   ├── FeaturedToggle.jsx        // Featured product toggle
-│   │   │   │   └── DiscountForm.jsx          // Discount settings (quantity, percentage)
+│   │   │   │   ├── ProductForm.jsx           // 📄 PURPOSE: Reusable form for product creation/editing
+│   │   │   │   │                        // EXAMPLE: Form with Name input, Description textarea, Price input, Category dropdown, Brand dropdown, Active checkbox
+│   │   │   │   ├── ProductTable.jsx          // 📄 PURPOSE: Display products in table format
+│   │   │   │   │                        // EXAMPLE: Table with columns: Image thumbnail, Name, Price, Category, Brand, Stock, Status badge, Actions
+│   │   │   │   ├── VariantForm.jsx           // 📄 PURPOSE: Form to create product variant
+│   │   │   │   │                        // EXAMPLE: Form with SKU input, Price input, Stock input, Attribute selectors (Storage: 128GB, Color: Black)
+│   │   │   │   ├── VariantTable.jsx          // 📄 PURPOSE: Display and edit product variants
+│   │   │   │   │                        // EXAMPLE: Table showing "128GB Black - ₹79,999 - Stock: 50" with inline edit for price and stock
+│   │   │   │   ├── MediaUploader.jsx         // 📄 PURPOSE: Drag-and-drop image/video uploader
+│   │   │   │   │                        // EXAMPLE: Drag-drop zone with "Drop images here or click to browse", shows upload progress, supports multiple files
+│   │   │   │   ├── MediaGallery.jsx          // 📄 PURPOSE: Display product images/videos
+│   │   │   │   │                        // EXAMPLE: Grid of product images with delete button on each, set as primary image option
+│   │   │   │   ├── CategoryTree.jsx          // 📄 PURPOSE: Hierarchical tree view of categories
+│   │   │   │   │                        // EXAMPLE: Expandable tree: "▼ Electronics > ▼ Mobiles > Smartphones, Feature Phones"
+│   │   │   │   ├── CategoryForm.jsx          // 📄 PURPOSE: Form to create/edit category
+│   │   │   │   │                        // EXAMPLE: Form with Name input, Parent Category dropdown, Target Role radio buttons (Customer/Retailer/Both)
+│   │   │   │   ├── BrandForm.jsx             // 📄 PURPOSE: Form to create/edit brand
+│   │   │   │   │                        // EXAMPLE: Form with Brand Name input, Logo upload, Description textarea
+│   │   │   │   ├── AttributeForm.jsx         // 📄 PURPOSE: Form to create attribute
+│   │   │   │   │                        // EXAMPLE: Form with Attribute Name ("Color"), Data Type dropdown (Text/Number), Add Values button
+│   │   │   │   ├── AttributeValueForm.jsx    // 📄 PURPOSE: Form to add attribute values
+│   │   │   │   │                        // EXAMPLE: For "Color" attribute, add values: Black, White, Blue, Red with Add More button
+│   │   │   │   ├── ProductStatusToggle.jsx   // 📄 PURPOSE: Toggle product active/inactive status
+│   │   │   │   │                        // EXAMPLE: Switch button "Active/Inactive" - when off, product hidden from customers
+│   │   │   │   ├── FeaturedToggle.jsx        // 📄 PURPOSE: Mark product as featured
+│   │   │   │   │                        // EXAMPLE: Star icon toggle - featured products appear on homepage
+│   │   │   │   └── DiscountForm.jsx          // 📄 PURPOSE: Set bulk/quantity discounts
+│   │   │   │                        // EXAMPLE: Form with "Buy 10+ get 5% off", "Buy 50+ get 10% off" rules
 │   │   │   ├── api/
-│   │   │   │   ├── productApi.js    // API: getAllProducts(), createProduct(), updateProduct(), deleteProduct()
-│   │   │   │   ├── categoryApi.js   // API: getAllCategories(), createCategory(), updateCategory(), deleteCategory()
-│   │   │   │   ├── brandApi.js      // API: getAllBrands(), createBrand(), updateBrand(), deleteBrand()
-│   │   │   │   ├── variantApi.js    // API: getVariants(), createVariant(), updateVariant(), deleteVariant()
-│   │   │   │   ├── attributeApi.js  // API: getAttributes(), createAttribute(), getAttributeValues()
-│   │   │   │   └── mediaApi.js      // API: uploadMedia(), deleteMedia(), getProductMedia()
-│   │   │   └── index.js
+│   │   │   │   ├── productApi.js    // 📄 PURPOSE: Product CRUD API calls
+│   │   │   │   │                        // EXAMPLE: getAllProducts() calls GET /api/products, createProduct(data) calls POST /api/products with {name, price, category_id}
+│   │   │   │   ├── categoryApi.js   // 📄 PURPOSE: Category CRUD API calls
+│   │   │   │   │                        // EXAMPLE: getAllCategories() returns tree structure, createCategory(data) with {name, parent_id, target_role}
+│   │   │   │   ├── brandApi.js      // 📄 PURPOSE: Brand CRUD API calls
+│   │   │   │   │                        // EXAMPLE: getAllBrands() returns [{id: 1, name: "Apple", logo_url: "..."}]
+│   │   │   │   ├── variantApi.js    // 📄 PURPOSE: Product variant API calls
+│   │   │   │   │                        // EXAMPLE: createVariant(productId, data) with {sku, price, stock_quantity, attributes: [{attribute_id: 1, value: "Black"}]}
+│   │   │   │   ├── attributeApi.js  // 📄 PURPOSE: Attribute management API calls
+│   │   │   │   │                        // EXAMPLE: getAttributes() returns [{id: 1, name: "Color", values: ["Black", "White"]}]
+│   │   │   │   └── mediaApi.js      // 📄 PURPOSE: Image/video upload API calls
+│   │   │   │                        // EXAMPLE: uploadMedia(file) uploads to server, returns {url: "https://cdn.../image.jpg"}
+│   │   │   └── index.js             // 📄 PURPOSE: Export all ProductManagement components
 │   │   │
-│   │   ├── OrderManagement/         // Order Management (Service 4: Order Management)
+│   │   ├── OrderManagement/         // 🛒 FEATURE: Order Management (Service 4: Order Management - Port 3004)
+│   │   │   │                        // BACKEND: Manages Order, OrderItem models
+│   │   │   │                        // EXAMPLE: Admin can view all orders, update order status (pending→processing→shipped→delivered), add tracking numbers, cancel orders
 │   │   │   ├── pages/
-│   │   │   │   ├── OrderListPage.jsx     // All orders list with filters
-│   │   │   │   └── OrderDetailsPage.jsx  // Order details with items, payment, shipping
+│   │   │   │   ├── OrderListPage.jsx     // 📄 PURPOSE: Display all orders with filters
+│   │   │   │   │                        // EXAMPLE: Table showing orders with Order ID, Customer, Total Amount, Status badge, Date. Filter by status, date range, search by order ID
+│   │   │   │   └── OrderDetailsPage.jsx  // 📄 PURPOSE: View complete order information
+│   │   │   │                        // EXAMPLE: Shows customer details, ordered items table, payment info, shipping address, tracking number, order timeline
 │   │   │   ├── components/
-│   │   │   │   ├── OrderTable.jsx            // Orders data table
-│   │   │   │   ├── OrderStatusBadge.jsx      // Status badge (pending, processing, shipped, delivered, cancelled)
-│   │   │   │   ├── OrderStatusUpdater.jsx    // Status update dropdown
-│   │   │   │   ├── OrderItemsTable.jsx       // Order items table
-│   │   │   │   ├── OrderSummary.jsx          // Order summary (subtotal, tax, shipping, total)
-│   │   │   │   ├── ShippingDetails.jsx       // Shipping address and tracking
-│   │   │   │   ├── PaymentDetails.jsx        // Payment method and status
-│   │   │   │   ├── RefundModal.jsx           // Refund processing modal
-│   │   │   │   ├── CancelOrderModal.jsx      // Cancel order modal
-│   │   │   │   └── TrackingNumberForm.jsx    // Add tracking number form
+│   │   │   │   ├── OrderTable.jsx            // 📄 PURPOSE: Display orders in table format
+│   │   │   │   │                        // EXAMPLE: Table with columns: Order #12345, John Doe, ₹15,999, Status badge, 15 Jan 2024. Click row to view details
+│   │   │   │   ├── OrderStatusBadge.jsx      // 📄 PURPOSE: Colored badge showing order status
+│   │   │   │   │                        // EXAMPLE: Yellow "Pending", Blue "Processing", Orange "Shipped", Green "Delivered", Red "Cancelled"
+│   │   │   │   ├── OrderStatusUpdater.jsx    // 📄 PURPOSE: Dropdown to update order status
+│   │   │   │   │                        // EXAMPLE: Dropdown with status progression: Pending→Processing→Shipped→Delivered. Updates order in real-time
+│   │   │   │   ├── OrderItemsTable.jsx       // 📄 PURPOSE: Display items in the order
+│   │   │   │   │                        // EXAMPLE: Table showing "iPhone 15 (128GB Black) - Qty: 1 - ₹79,999", "AirPods Pro - Qty: 2 - ₹49,998"
+│   │   │   │   ├── OrderSummary.jsx          // 📄 PURPOSE: Show order cost breakdown
+│   │   │   │   │                        // EXAMPLE: Subtotal: ₹1,29,997, Tax (18%): ₹23,399, Shipping: ₹500, Total: ₹1,53,896
+│   │   │   │   ├── ShippingDetails.jsx       // 📄 PURPOSE: Display shipping address and tracking
+│   │   │   │   │                        // EXAMPLE: Shows "Ship to: John Doe, 123 Main St, Delhi 110001", Tracking: "FEDEX123456789", Estimated delivery: 20 Jan 2024
+│   │   │   │   ├── PaymentDetails.jsx        // 📄 PURPOSE: Show payment information
+│   │   │   │   │                        // EXAMPLE: Payment Method: Credit Card (****1234), Status: Paid, Transaction ID: TXN789456123
+│   │   │   │   ├── RefundModal.jsx           // 📄 PURPOSE: Process refund for order
+│   │   │   │   │                        // EXAMPLE: Modal with refund amount input, reason dropdown (Damaged, Wrong item), Refund button
+│   │   │   │   ├── CancelOrderModal.jsx      // 📄 PURPOSE: Cancel order with reason
+│   │   │   │   │                        // EXAMPLE: Modal asking "Reason for cancellation?", dropdown with options: Customer request, Out of stock, Other
+│   │   │   │   └── TrackingNumberForm.jsx    // 📄 PURPOSE: Add shipping tracking number
+│   │   │   │                        // EXAMPLE: Form with Courier dropdown (FedEx, DHL, BlueDart), Tracking Number input, Expected Delivery Date picker
 │   │   │   ├── api/
-│   │   │   │   └── orderApi.js      // API: getAllOrders(), getOrderById(), updateOrderStatus(), cancelOrder()
-│   │   │   └── index.js
+│   │   │   │   └── orderApi.js      // 📄 PURPOSE: Order management API calls
+│   │   │   │                        // EXAMPLE: getAllOrders() calls GET /api/orders, updateOrderStatus(id, status) calls PUT /api/orders/:id/status
+│   │   │   └── index.js             // 📄 PURPOSE: Export all OrderManagement components
 │   │   │
-│   │   ├── PaymentManagement/       // Payment Management (Service 5: Payment)
+│   │   ├── PaymentManagement/       // 💳 FEATURE: Payment Management (Service 5: Payment - Port 3005)
+│   │   │   │                        // BACKEND: Manages Payment model
+│   │   │   │                        // EXAMPLE: Admin can view all payments, check transaction status, process refunds, view payment analytics
 │   │   │   ├── pages/
-│   │   │   │   ├── PaymentListPage.jsx    // All payments list
-│   │   │   │   └── PaymentDetailsPage.jsx // Payment details
+│   │   │   │   ├── PaymentListPage.jsx    // 📄 PURPOSE: Display all payment transactions
+│   │   │   │   │                        // EXAMPLE: Table showing Payment ID, Order ID, Customer, Amount, Method (Card/UPI/Wallet), Status, Date
+│   │   │   │   └── PaymentDetailsPage.jsx // 📄 PURPOSE: View complete payment transaction details
+│   │   │   │                        // EXAMPLE: Shows transaction ID, payment gateway response, card details (masked), timestamp, refund history
 │   │   │   ├── components/
-│   │   │   │   ├── PaymentTable.jsx           // Payments data table
-│   │   │   │   ├── PaymentStatusBadge.jsx     // Status badge (pending, paid, failed, refunded)
-│   │   │   │   ├── PaymentMethodBadge.jsx     // Payment method badge
-│   │   │   │   ├── RefundForm.jsx             // Refund form
-│   │   │   │   ├── TransactionDetails.jsx     // Transaction details display
-│   │   │   │   └── PaymentAnalytics.jsx       // Payment analytics charts
+│   │   │   │   ├── PaymentTable.jsx           // 📄 PURPOSE: Display payments in table
+│   │   │   │   │                        // EXAMPLE: Table with sortable columns, filter by status/method, date range picker
+│   │   │   │   ├── PaymentStatusBadge.jsx     // 📄 PURPOSE: Colored badge for payment status
+│   │   │   │   │                        // EXAMPLE: Yellow "Pending", Green "Paid", Red "Failed", Blue "Refunded"
+│   │   │   │   ├── PaymentMethodBadge.jsx     // 📄 PURPOSE: Display payment method icon
+│   │   │   │   │                        // EXAMPLE: Shows credit card icon for "Card", UPI icon for "UPI", wallet icon for "Paytm/PhonePe"
+│   │   │   │   ├── RefundForm.jsx             // 📄 PURPOSE: Process payment refund
+│   │   │   │   │                        // EXAMPLE: Form with Refund Amount input (max: original amount), Reason dropdown, Process Refund button
+│   │   │   │   ├── TransactionDetails.jsx     // 📄 PURPOSE: Show transaction information
+│   │   │   │   │                        // EXAMPLE: Displays Gateway: Razorpay, Transaction ID: pay_123abc, Card: ****1234, Amount: ₹1,53,896
+│   │   │   │   └── PaymentAnalytics.jsx       // 📄 PURPOSE: Payment statistics charts
+│   │   │   │                        // EXAMPLE: Pie chart showing payment methods distribution, line chart for daily revenue
 │   │   │   ├── api/
-│   │   │   │   └── paymentApi.js    // API: getAllPayments(), getPaymentById(), processRefund()
-│   │   │   └── index.js
+│   │   │   │   └── paymentApi.js    // 📄 PURPOSE: Payment API calls
+│   │   │   │                        // EXAMPLE: getAllPayments() calls GET /api/payments, processRefund(id, amount) calls POST /api/payments/:id/refund
+│   │   │   └── index.js             // 📄 PURPOSE: Export all PaymentManagement components
 │   │   │
-│   │   ├── PromotionManagement/     // Promotion Management (Service 6: Promotion)
+│   │   ├── PromotionManagement/     // 🎁 FEATURE: Promotion Management (Service 6: Promotion - Port 3006)
+│   │   │   │                        // BACKEND: Manages Coupon, CouponRedemption, DiscountRule models
+│   │   │   │                        // EXAMPLE: Admin can create coupons (SAVE20), set discount rules (Buy 10 get 5% off), track coupon usage
 │   │   │   ├── pages/
-│   │   │   │   ├── CouponListPage.jsx        // All coupons list
-│   │   │   │   ├── CouponCreatePage.jsx      // Create coupon
-│   │   │   │   ├── CouponEditPage.jsx        // Edit coupon
-│   │   │   │   ├── DiscountRuleListPage.jsx  // Discount rules list
-│   │   │   │   └── DiscountRuleCreatePage.jsx // Create discount rule
+│   │   │   │   ├── CouponListPage.jsx        // 📄 PURPOSE: Display all coupons
+│   │   │   │   │                        // EXAMPLE: Table showing Code, Discount, Type, Target, Valid From-To, Usage (50/100), Status
+│   │   │   │   ├── CouponCreatePage.jsx      // 📄 PURPOSE: Create new coupon
+│   │   │   │   │                        // EXAMPLE: Form to create "SAVE20" - 20% off on Electronics category for customers, valid 1-31 Jan
+│   │   │   │   ├── CouponEditPage.jsx        // 📄 PURPOSE: Edit existing coupon
+│   │   │   │   │                        // EXAMPLE: Update coupon validity dates, increase max usage limit, change discount value
+│   │   │   │   ├── DiscountRuleListPage.jsx  // 📄 PURPOSE: Display discount rules
+│   │   │   │   │                        // EXAMPLE: Table showing "Buy 10+ get 5% off", "Buy 50+ get 10% off", "Retailer discount: 15%"
+│   │   │   │   └── DiscountRuleCreatePage.jsx // 📄 PURPOSE: Create bulk/quantity discount rule
+│   │   │   │                        // EXAMPLE: Form to create "Buy 20+ units get 8% discount" rule for retailers
 │   │   │   ├── components/
-│   │   │   │   ├── CouponForm.jsx            // Coupon form (code, type, discount_value, target_type, validity)
-│   │   │   │   ├── CouponTable.jsx           // Coupons data table
-│   │   │   │   ├── CouponTypeBadge.jsx       // Type badge (fixed, percentage)
-│   │   │   │   ├── CouponTargetSelector.jsx  // Target selector (cart, product, category, brand)
-│   │   │   │   ├── CouponRoleSelector.jsx    // Role selector (customer, retailer, both)
-│   │   │   │   ├── UsageStatsChart.jsx       // Coupon usage analytics
-│   │   │   │   ├── RedemptionHistory.jsx     // Redemption history table
-│   │   │   │   ├── DiscountRuleForm.jsx      // Discount rule form (bulk, quantity, retailer)
-│   │   │   │   └── DiscountRuleTable.jsx     // Discount rules table
+│   │   │   │   ├── CouponForm.jsx            // 📄 PURPOSE: Form to create/edit coupon
+│   │   │   │   │                        // EXAMPLE: Fields: Code, Type (Fixed/Percentage), Value, Target (Cart/Product/Category), Role, Validity dates, Max uses
+│   │   │   │   ├── CouponTable.jsx           // 📄 PURPOSE: Display coupons in table
+│   │   │   │   │                        // EXAMPLE: Shows "SAVE20 - 20% off - Electronics - 50/100 used - Active"
+│   │   │   │   ├── CouponTypeBadge.jsx       // 📄 PURPOSE: Badge showing discount type
+│   │   │   │   │                        // EXAMPLE: Green badge "Percentage" or Blue badge "Fixed Amount"
+│   │   │   │   ├── CouponTargetSelector.jsx  // 📄 PURPOSE: Select what coupon applies to
+│   │   │   │   │                        // EXAMPLE: Radio buttons: Entire Cart, Specific Product, Category, Brand
+│   │   │   │   ├── CouponRoleSelector.jsx    // 📄 PURPOSE: Select who can use coupon
+│   │   │   │   │                        // EXAMPLE: Checkboxes: Customers, Retailers, Both
+│   │   │   │   ├── UsageStatsChart.jsx       // 📄 PURPOSE: Coupon usage analytics
+│   │   │   │   │                        // EXAMPLE: Bar chart showing "SAVE20 used 50 times, FLAT100 used 30 times"
+│   │   │   │   ├── RedemptionHistory.jsx     // 📄 PURPOSE: Show coupon usage history
+│   │   │   │   │                        // EXAMPLE: Table: "John Doe used SAVE20 on Order #12345 - Saved ₹500 - 15 Jan 2024"
+│   │   │   │   ├── DiscountRuleForm.jsx      // 📄 PURPOSE: Form to create discount rule
+│   │   │   │   │                        // EXAMPLE: Fields: Rule Type (Bulk/Quantity/Retailer), Min Quantity, Discount %, Applicable To
+│   │   │   │   └── DiscountRuleTable.jsx     // 📄 PURPOSE: Display discount rules
+│   │   │   │                        // EXAMPLE: Table showing all active discount rules with edit/delete actions
 │   │   │   ├── api/
-│   │   │   │   ├── couponApi.js     // API: getAllCoupons(), createCoupon(), updateCoupon(), deleteCoupon()
-│   │   │   │   └── discountApi.js   // API: getDiscountRules(), createDiscountRule(), updateDiscountRule()
-│   │   │   └── index.js
+│   │   │   │   ├── couponApi.js     // 📄 PURPOSE: Coupon CRUD API calls
+│   │   │   │   │                        // EXAMPLE: createCoupon(data) calls POST /api/coupons with {code: "SAVE20", type: "percentage", value: 20}
+│   │   │   │   └── discountApi.js   // 📄 PURPOSE: Discount rule API calls
+│   │   │   │                        // EXAMPLE: getDiscountRules() calls GET /api/discount-rules, returns array of rules
+│   │   │   └── index.js             // 📄 PURPOSE: Export all PromotionManagement components
 │   │   │
-│   │   ├── ReviewManagement/        // Review Management (Service 7: Review)
+│   │   ├── ReviewManagement/        // ⭐ FEATURE: Review Management (Service 7: Review - Port 3007)
+│   │   │   │                        // BACKEND: Manages ProductReview model
+│   │   │   │                        // EXAMPLE: Admin can view all reviews, approve/reject reviews, flag inappropriate content, view review analytics
 │   │   │   ├── pages/
-│   │   │   │   ├── ReviewListPage.jsx     // All reviews list with filters
-│   │   │   │   └── ReviewModeratePage.jsx // Review moderation page
+│   │   │   │   ├── ReviewListPage.jsx     // 📄 PURPOSE: Display all product reviews
+│   │   │   │   │                        // EXAMPLE: Table showing Product, Customer, Rating (4⭐), Review Text, Status, Date. Filter by rating/status
+│   │   │   │   └── ReviewModeratePage.jsx // 📄 PURPOSE: Moderate pending reviews
+│   │   │   │                        // EXAMPLE: Shows pending reviews with Approve/Reject/Flag buttons, reason for rejection dropdown
 │   │   │   ├── components/
-│   │   │   │   ├── ReviewTable.jsx           // Reviews data table
-│   │   │   │   ├── ReviewCard.jsx            // Review display card
-│   │   │   │   ├── ReviewActionBadge.jsx     // Action badge (pending, approve, reject, flag)
-│   │   │   │   ├── ModerationActions.jsx     // Moderation buttons
-│   │   │   │   ├── RatingDisplay.jsx         // Star rating display
-│   │   │   │   ├── VerifiedPurchaseBadge.jsx // Verified purchase badge
-│   │   │   │   └── ReviewAnalytics.jsx       // Review analytics
+│   │   │   │   ├── ReviewTable.jsx           // 📄 PURPOSE: Display reviews in table
+│   │   │   │   │                        // EXAMPLE: Table with Product image, Customer name, Rating stars, Review snippet, Moderation status
+│   │   │   │   ├── ReviewCard.jsx            // 📄 PURPOSE: Display single review in card format
+│   │   │   │   │                        // EXAMPLE: Card showing customer photo, name, 5⭐, "Great product!", Verified Purchase badge, Date
+│   │   │   │   ├── ReviewActionBadge.jsx     // 📄 PURPOSE: Badge showing review status
+│   │   │   │   │                        // EXAMPLE: Yellow "Pending", Green "Approved", Red "Rejected", Orange "Flagged"
+│   │   │   │   ├── ModerationActions.jsx     // 📄 PURPOSE: Buttons for review moderation
+│   │   │   │   │                        // EXAMPLE: Three buttons: Green "Approve", Red "Reject", Orange "Flag as Inappropriate"
+│   │   │   │   ├── RatingDisplay.jsx         // 📄 PURPOSE: Show star rating
+│   │   │   │   │                        // EXAMPLE: Displays 4.5⭐⭐⭐⭐☆ with filled/half/empty stars
+│   │   │   │   ├── VerifiedPurchaseBadge.jsx // 📄 PURPOSE: Show if review is from verified buyer
+│   │   │   │   │                        // EXAMPLE: Green checkmark badge "Verified Purchase" if customer actually bought the product
+│   │   │   │   └── ReviewAnalytics.jsx       // 📄 PURPOSE: Review statistics
+│   │   │   │                        // EXAMPLE: Shows average rating 4.2/5, total reviews 1,234, rating distribution bar chart
 │   │   │   ├── api/
-│   │   │   │   └── reviewApi.js     // API: getAllReviews(), moderateReview(), deleteReview()
-│   │   │   └── index.js
+│   │   │   │   └── reviewApi.js     // 📄 PURPOSE: Review management API calls
+│   │   │   │                        // EXAMPLE: moderateReview(id, action) calls POST /api/reviews/:id/moderate with {action: "approve"}
+│   │   │   └── index.js             // 📄 PURPOSE: Export all ReviewManagement components
 │   │   │
-│   │   ├── InventoryManagement/     // Inventory Management (Service 8: Inventory)
+│   │   ├── InventoryManagement/     // 📦 FEATURE: Inventory Management (Service 8: Inventory - Port 3008)
+│   │   │   │                        // BACKEND: Manages StockAlert model
+│   │   │   │                        // EXAMPLE: Admin can view stock levels, get low stock alerts, update inventory, view stock analytics
 │   │   │   ├── pages/
-│   │   │   │   ├── InventoryListPage.jsx  // Stock levels list
-│   │   │   │   └── StockAlertPage.jsx     // Stock alerts management
+│   │   │   │   ├── InventoryListPage.jsx  // 📄 PURPOSE: Display stock levels for all products
+│   │   │   │   │                        // EXAMPLE: Table showing Product, Variant, Current Stock, Min Stock Level, Status. Filter by low stock/out of stock
+│   │   │   │   └── StockAlertPage.jsx     // 📄 PURPOSE: Manage stock alerts and notifications
+│   │   │   │                        // EXAMPLE: Shows "iPhone 15 (128GB) - Stock: 5 (Min: 10) - Alert sent 2 hours ago". Configure alert thresholds
 │   │   │   ├── components/
-│   │   │   │   ├── InventoryTable.jsx        // Inventory data table
-│   │   │   │   ├── StockLevelBadge.jsx       // Stock level badge (low, out-of-stock)
-│   │   │   │   ├── StockUpdateForm.jsx       // Update stock form
-│   │   │   │   ├── AlertHistory.jsx          // Alert history timeline
-│   │   │   │   ├── LowStockTable.jsx         // Low stock products table
-│   │   │   │   └── StockAnalytics.jsx        // Stock analytics charts
+│   │   │   │   ├── InventoryTable.jsx        // 📄 PURPOSE: Display inventory in table format
+│   │   │   │   │                        // EXAMPLE: Table with Product name, SKU, Current Stock, Reserved, Available, Last Updated
+│   │   │   │   ├── StockLevelBadge.jsx       // 📄 PURPOSE: Colored badge for stock status
+│   │   │   │   │                        // EXAMPLE: Green "In Stock (50+)", Yellow "Low Stock (5-10)", Red "Out of Stock (0)"
+│   │   │   │   ├── StockUpdateForm.jsx       // 📄 PURPOSE: Form to update stock quantity
+│   │   │   │   │                        // EXAMPLE: Form with Product selector, Variant selector, Add/Remove quantity, Reason dropdown (Received/Sold/Damaged)
+│   │   │   │   ├── AlertHistory.jsx          // 📄 PURPOSE: Timeline of stock alerts
+│   │   │   │   │                        // EXAMPLE: Timeline showing "iPhone 15 low stock alert - 2 hours ago", "AirPods out of stock - 1 day ago"
+│   │   │   │   ├── LowStockTable.jsx         // 📄 PURPOSE: Table showing products with low stock
+│   │   │   │   │                        // EXAMPLE: Urgent table highlighting products below minimum threshold with reorder suggestions
+│   │   │   │   └── StockAnalytics.jsx        // 📄 PURPOSE: Stock analytics charts
+│   │   │   │                        // EXAMPLE: Line chart showing stock levels over time, bar chart for most/least stocked products
 │   │   │   ├── api/
-│   │   │   │   └── inventoryApi.js  // API: getStockAlerts(), updateInventory(), getInventoryReports()
-│   │   │   └── index.js
+│   │   │   │   └── inventoryApi.js  // 📄 PURPOSE: Inventory management API calls
+│   │   │   │                        // EXAMPLE: getStockAlerts() calls GET /api/inventory/alerts, updateInventory(id, qty) calls PUT /api/inventory/:id
+│   │   │   └── index.js             // 📄 PURPOSE: Export all InventoryManagement components
 │   │   │
-│   │   ├── StoreManagement/         // Store Management (Service 9: Store Management)
+│   │   ├── StoreManagement/         // 🏪 FEATURE: Store Management (Service 9: Store Management - Port 3009)
+│   │   │   │                        // BACKEND: Manages Store model
+│   │   │   │                        // EXAMPLE: Admin can view all retailer stores, approve new stores, view store performance, manage store status
 │   │   │   ├── pages/
-│   │   │   │   ├── StoreListPage.jsx     // All stores list
-│   │   │   │   └── StoreDetailsPage.jsx  // Store details
+│   │   │   │   ├── StoreListPage.jsx     // 📄 PURPOSE: Display all retailer stores
+│   │   │   │   │                        // EXAMPLE: Table showing Store Name, Owner, Location, Status (Pending/Active/Inactive), Total Sales, Registration Date
+│   │   │   │   └── StoreDetailsPage.jsx  // 📄 PURPOSE: View complete store information
+│   │   │   │                        // EXAMPLE: Shows store details, owner info, products listed, sales stats, customer reviews, approval status
 │   │   │   ├── components/
-│   │   │   │   ├── StoreTable.jsx           // Stores data table
-│   │   │   │   ├── StoreForm.jsx            // Store form
-│   │   │   │   ├── StoreStatusBadge.jsx     // Status badge (active, inactive)
-│   │   │   │   ├── StoreApprovalForm.jsx    // Approval form
-│   │   │   │   ├── StoreStats.jsx           // Store metrics cards
-│   │   │   │   └── OwnerDetails.jsx         // Owner information display
+│   │   │   │   ├── StoreTable.jsx           // 📄 PURPOSE: Display stores in table format
+│   │   │   │   │                        // EXAMPLE: Table with Store logo, Name, Owner, City, Products count, Status badge, Actions
+│   │   │   │   ├── StoreForm.jsx            // 📄 PURPOSE: Form to create/edit store
+│   │   │   │   │                        // EXAMPLE: Form with Store Name, Description, Address, GST Number, Bank Details, Documents upload
+│   │   │   │   ├── StoreStatusBadge.jsx     // 📄 PURPOSE: Badge showing store status
+│   │   │   │   │                        // EXAMPLE: Yellow "Pending Approval", Green "Active", Gray "Inactive", Red "Suspended"
+│   │   │   │   ├── StoreApprovalForm.jsx    // 📄 PURPOSE: Form to approve/reject store
+│   │   │   │   │                        // EXAMPLE: Shows store documents, verification checklist, Approve/Reject buttons, Reason for rejection field
+│   │   │   │   ├── StoreStats.jsx           // 📄 PURPOSE: Store performance metrics
+│   │   │   │   │                        // EXAMPLE: Cards showing Total Products: 45, Total Sales: ₹2,50,000, Orders: 123, Rating: 4.5⭐
+│   │   │   │   └── OwnerDetails.jsx         // 📄 PURPOSE: Display store owner information
+│   │   │   │                        // EXAMPLE: Shows owner name, email, phone, ID proof, business registration documents
 │   │   │   ├── api/
-│   │   │   │   └── storeApi.js      // API: getAllStores(), approveStore(), getStoreAnalytics()
-│   │   │   └── index.js
+│   │   │   │   └── storeApi.js      // 📄 PURPOSE: Store management API calls
+│   │   │   │                        // EXAMPLE: approveStore(id) calls POST /api/stores/:id/approve, getStoreAnalytics(id) returns sales data
+│   │   │   └── index.js             // 📄 PURPOSE: Export all StoreManagement components
 │   │   │
-│   │   ├── NotificationManagement/  // Notification Management (Service 10: Notification)
+│   │   ├── NotificationManagement/  // 🔔 FEATURE: Notification Management (Service 10: Notification - Port 3010)
+│   │   │   │                        // BACKEND: Manages Notification model
+│   │   │   │                        // EXAMPLE: Admin can send bulk notifications (email/SMS/in-app), create templates, track delivery status
 │   │   │   ├── pages/
-│   │   │   │   ├── NotificationListPage.jsx  // Notifications list
-│   │   │   │   ├── TemplateListPage.jsx      // Templates list
-│   │   │   │   ├── TemplateCreatePage.jsx    // Create template
-│   │   │   │   └── BulkSendPage.jsx          // Bulk send page
+│   │   │   │   ├── NotificationListPage.jsx  // 📄 PURPOSE: Display all sent notifications
+│   │   │   │   │                        // EXAMPLE: Table showing Subject, Audience, Channel, Status, Sent Date. Filter by status/channel
+│   │   │   │   ├── TemplateListPage.jsx      // 📄 PURPOSE: Manage notification templates
+│   │   │   │   │                        // EXAMPLE: List showing "Welcome Email", "Order Shipped", "Password Reset" templates with edit/delete actions
+│   │   │   │   ├── TemplateCreatePage.jsx    // 📄 PURPOSE: Create new notification template
+│   │   │   │   │                        // EXAMPLE: Form with Template Name, Subject, Body (rich text editor), Variables ({{name}}, {{order_id}})
+│   │   │   │   └── BulkSendPage.jsx          // 📄 PURPOSE: Send notifications to multiple users
+│   │   │   │                        // EXAMPLE: Form to select template, audience (all/customers/retailers), channel, schedule send time
 │   │   │   ├── components/
-│   │   │   │   ├── NotificationTable.jsx     // Notifications table
-│   │   │   │   ├── TemplateEditor.jsx        // Rich text editor for templates
-│   │   │   │   ├── TemplateForm.jsx          // Template form
-│   │   │   │   ├── SendForm.jsx              // Send notification form
-│   │   │   │   ├── AudienceSelector.jsx      // Audience selector (all_users, customers, retailers, specific)
-│   │   │   │   ├── ChannelSelector.jsx       // Channel selector (email, sms, in_app)
-│   │   │   │   ├── NotificationStatusBadge.jsx // Status badge (pending, sent, failed)
-│   │   │   │   └── NotificationAnalytics.jsx // Notification analytics
+│   │   │   │   ├── NotificationTable.jsx     // 📄 PURPOSE: Display notifications in table
+│   │   │   │   │                        // EXAMPLE: Table showing "Flash Sale Alert - Sent to 1,234 customers - Email - Delivered: 1,200"
+│   │   │   │   ├── TemplateEditor.jsx        // 📄 PURPOSE: Rich text editor for notification content
+│   │   │   │   │                        // EXAMPLE: WYSIWYG editor with formatting options, image upload, variable insertion {{user_name}}
+│   │   │   │   ├── TemplateForm.jsx          // 📄 PURPOSE: Form to create/edit template
+│   │   │   │   │                        // EXAMPLE: Fields: Template Name, Subject, Body editor, Available Variables list
+│   │   │   │   ├── SendForm.jsx              // 📄 PURPOSE: Form to send notification
+│   │   │   │   │                        // EXAMPLE: Select template dropdown, audience selector, channel checkboxes, Send Now/Schedule buttons
+│   │   │   │   ├── AudienceSelector.jsx      // 📄 PURPOSE: Select notification recipients
+│   │   │   │   │                        // EXAMPLE: Radio buttons: All Users, All Customers, All Retailers, Specific Users (with search)
+│   │   │   │   ├── ChannelSelector.jsx       // 📄 PURPOSE: Select notification delivery channel
+│   │   │   │   │                        // EXAMPLE: Checkboxes: Email, SMS, In-App Notification (can select multiple)
+│   │   │   │   ├── NotificationStatusBadge.jsx // 📄 PURPOSE: Badge showing notification status
+│   │   │   │   │                        // EXAMPLE: Yellow "Pending", Blue "Sending", Green "Sent", Red "Failed"
+│   │   │   │   └── NotificationAnalytics.jsx // 📄 PURPOSE: Notification delivery statistics
+│   │   │   │                        // EXAMPLE: Charts showing delivery rate, open rate (email), click rate, failed deliveries
 │   │   │   ├── api/
-│   │   │   │   └── notificationApi.js // API: sendBulkNotification(), manageTemplates(), getNotificationStats()
-│   │   │   └── index.js
+│   │   │   │   └── notificationApi.js // 📄 PURPOSE: Notification API calls
+│   │   │   │                        // EXAMPLE: sendBulkNotification(data) calls POST /api/notifications/bulk with {template_id, audience, channel}
+│   │   │   └── index.js             // 📄 PURPOSE: Export all NotificationManagement components
 │   │   │
-│   │   ├── BannerManagement/        // Banner Management (Homepage Banners, Promotional Banners)
+│   │   ├── BannerManagement/        // 🖼️ FEATURE: Banner Management (Homepage Banners, Promotional Banners)
+│   │   │   │                        // BACKEND: Manages Banner model (CMS)
+│   │   │   │                        // EXAMPLE: Admin can create homepage banners, promotional banners, reorder banner display, set active/inactive
 │   │   │   ├── pages/
-│   │   │   │   ├── BannerListPage.jsx    // Banners list
-│   │   │   │   ├── BannerCreatePage.jsx  // Create banner
-│   │   │   │   └── BannerEditPage.jsx    // Edit banner
+│   │   │   │   ├── BannerListPage.jsx    // 📄 PURPOSE: Display all banners
+│   │   │   │   │                        // EXAMPLE: Grid/List showing banner images, titles, positions, status. Drag to reorder display sequence
+│   │   │   │   ├── BannerCreatePage.jsx  // 📄 PURPOSE: Create new banner
+│   │   │   │   │                        // EXAMPLE: Form with Title, Image upload, Link URL, Position (Homepage/Category), Display order, Active toggle
+│   │   │   │   └── BannerEditPage.jsx    // 📄 PURPOSE: Edit existing banner
+│   │   │   │                        // EXAMPLE: Pre-filled form to update banner image, change link, modify display position
 │   │   │   ├── components/
-│   │   │   │   ├── BannerForm.jsx           // Banner form (title, image, link, position)
-│   │   │   │   ├── BannerPreview.jsx        // Banner preview
-│   │   │   │   ├── SortableBanners.jsx      // Drag-and-drop banner list for ordering
-│   │   │   │   ├── BannerImageUploader.jsx  // Image uploader with crop
-│   │   │   │   └── BannerStatusToggle.jsx   // Active/inactive toggle
+│   │   │   │   ├── BannerForm.jsx           // 📄 PURPOSE: Form to create/edit banner
+│   │   │   │   │                        // EXAMPLE: Fields: Title, Image uploader, Link URL, Position dropdown, Display Order number, Active checkbox
+│   │   │   │   ├── BannerPreview.jsx        // 📄 PURPOSE: Preview how banner looks
+│   │   │   │   │                        // EXAMPLE: Shows banner in actual size with "Desktop View" and "Mobile View" tabs
+│   │   │   │   ├── SortableBanners.jsx      // 📄 PURPOSE: Drag-and-drop to reorder banners
+│   │   │   │   │                        // EXAMPLE: List of banners with drag handles, drag to change display order (1st banner shows first on homepage)
+│   │   │   │   ├── BannerImageUploader.jsx  // 📄 PURPOSE: Upload and crop banner image
+│   │   │   │   │                        // EXAMPLE: Image uploader with crop tool, recommended size: 1920x600px, preview before upload
+│   │   │   │   └── BannerStatusToggle.jsx   // 📄 PURPOSE: Toggle banner active/inactive
+│   │   │   │                        // EXAMPLE: Switch button - when off, banner hidden from website
 │   │   │   ├── api/
-│   │   │   │   └── bannerApi.js     // API: getBanners(), createBanner(), updateBanner(), deleteBanner(), reorderBanners()
-│   │   │   └── index.js
+│   │   │   │   └── bannerApi.js     // 📄 PURPOSE: Banner management API calls
+│   │   │   │                        // EXAMPLE: reorderBanners(order) calls PUT /api/banners/reorder with [{id: 1, order: 1}, {id: 2, order: 2}]
+│   │   │   └── index.js             // 📄 PURPOSE: Export all BannerManagement components
 │   │   │
 │   │   │
-│   │   ├── Analytics/               // Analytics & Reports
+│   │   ├── Analytics/               // 📊 FEATURE: Analytics & Reports
+│   │   │   │                        // BACKEND: Aggregates data from multiple services for analytics
+│   │   │   │                        // EXAMPLE: Admin can view sales trends, user growth, product performance, order analytics with charts and export options
 │   │   │   ├── pages/
-│   │   │   │   ├── SalesReportPage.jsx       // Sales reports
-│   │   │   │   ├── UserReportPage.jsx        // User analytics
-│   │   │   │   ├── ProductReportPage.jsx     // Product performance
-│   │   │   │   ├── OrderReportPage.jsx       // Order analytics
-│   │   │   │   └── RevenueReportPage.jsx     // Revenue analytics
+│   │   │   │   ├── SalesReportPage.jsx       // 📄 PURPOSE: Sales analytics and trends
+│   │   │   │   │                        // EXAMPLE: Line chart showing daily/weekly/monthly sales, comparison with previous period, top selling days
+│   │   │   │   ├── UserReportPage.jsx        // 📄 PURPOSE: User analytics and growth
+│   │   │   │   │                        // EXAMPLE: Charts showing new user registrations, active users, user retention rate, churn rate
+│   │   │   │   ├── ProductReportPage.jsx     // 📄 PURPOSE: Product performance analytics
+│   │   │   │   │                        // EXAMPLE: Bar chart of top 10 products by sales, worst performing products, category-wise performance
+│   │   │   │   ├── OrderReportPage.jsx       // 📄 PURPOSE: Order analytics
+│   │   │   │   │                        // EXAMPLE: Pie chart showing order status distribution, average order value trend, orders by payment method
+│   │   │   │   └── RevenueReportPage.jsx     // 📄 PURPOSE: Revenue analytics
+│   │   │   │                        // EXAMPLE: Line chart showing revenue trends, revenue by category, revenue by customer type (retail/customer)
 │   │   │   ├── components/
-│   │   │   │   ├── SalesChart.jsx            // Sales trend chart
-│   │   │   │   ├── RevenueChart.jsx          // Revenue chart
-│   │   │   │   ├── UserGrowthChart.jsx       // User growth chart
-│   │   │   │   ├── ProductPerformanceChart.jsx // Product performance
-│   │   │   │   ├── OrderStatusChart.jsx      // Order status distribution
-│   │   │   │   ├── DateRangeFilter.jsx       // Date range filter
-│   │   │   │   └── ExportButton.jsx          // Export to CSV/PDF
+│   │   │   │   ├── SalesChart.jsx            // 📄 PURPOSE: Reusable sales trend chart
+│   │   │   │   │                        // EXAMPLE: Line/bar chart component with date range selector, shows sales over time
+│   │   │   │   ├── RevenueChart.jsx          // 📄 PURPOSE: Revenue visualization chart
+│   │   │   │   │                        // EXAMPLE: Area chart showing revenue growth with comparison to previous period
+│   │   │   │   ├── UserGrowthChart.jsx       // 📄 PURPOSE: User growth visualization
+│   │   │   │   │                        // EXAMPLE: Line chart showing cumulative user registrations over time
+│   │   │   │   ├── ProductPerformanceChart.jsx // 📄 PURPOSE: Product sales performance chart
+│   │   │   │   │                        // EXAMPLE: Horizontal bar chart showing top 10 products by revenue/quantity sold
+│   │   │   │   ├── OrderStatusChart.jsx      // 📄 PURPOSE: Order status distribution
+│   │   │   │   │                        // EXAMPLE: Pie chart showing Delivered: 70%, Shipped: 15%, Processing: 10%, Cancelled: 5%
+│   │   │   │   ├── DateRangeFilter.jsx       // 📄 PURPOSE: Filter analytics by date range
+│   │   │   │   │                        // EXAMPLE: Date picker with presets: Today, Last 7 days, Last 30 days, This Month, Custom Range
+│   │   │   │   └── ExportButton.jsx          // 📄 PURPOSE: Export report data
+│   │   │   │                        // EXAMPLE: Button with dropdown: Export as CSV, Export as PDF, Export as Excel
 │   │   │   ├── api/
-│   │   │   │   └── analyticsApi.js  // API: getSalesReport(), getUserReport(), getProductReport()
-│   │   │   └── index.js
+│   │   │   │   └── analyticsApi.js  // 📄 PURPOSE: Analytics data API calls
+│   │   │   │                        // EXAMPLE: getSalesReport(startDate, endDate) calls GET /api/analytics/sales?from=2024-01-01&to=2024-01-31
+│   │   │   └── index.js             // 📄 PURPOSE: Export all Analytics components
 │   │   │
-│   │   └── ReportsAnalytics/        // ✅ Financial & Sales Analytics
+│   │   └── ReportsAnalytics/        // 📊 FEATURE: Financial & Sales Analytics (Advanced Reports)
+│   │       │                        // BACKEND: Aggregates financial data for detailed reporting
+│   │       │                        // EXAMPLE: Admin can view comprehensive financial reports, profit margins, refund analytics, detailed sales breakdowns
 │   │       ├── pages/
-│   │       │   ├── ReportsOverviewPage.jsx   // Main dashboard for reports
-│   │       │   ├── SalesReportPage.jsx       // Charts for sales performance
-│   │       │   ├── UserReportPage.jsx        // Active users, retention, churn
-│   │       │   └── FinancialReportPage.jsx   // Revenue, refunds, profit margins
+│   │       │   ├── ReportsOverviewPage.jsx   // 📄 PURPOSE: Main dashboard for all reports
+│   │       │   │                        // EXAMPLE: Overview page with cards linking to different report types, recent reports list
+│   │       │   ├── SalesReportPage.jsx       // 📄 PURPOSE: Detailed sales performance report
+│   │       │   │                        // EXAMPLE: Comprehensive sales breakdown by product, category, region, time period with multiple charts
+│   │       │   ├── UserReportPage.jsx        // 📄 PURPOSE: User behavior and retention report
+│   │       │   │                        // EXAMPLE: Active users, retention cohorts, churn analysis, user lifetime value
+│   │       │   └── FinancialReportPage.jsx   // 📄 PURPOSE: Financial performance report
+│   │       │                        // EXAMPLE: Revenue, costs, profit margins, refunds, taxes, net profit with comparison charts
 │   │       ├── components/
-│   │       │   ├── ReportFilterBar.jsx       // Date range, filters
-│   │       │   ├── ReportChart.jsx           // Chart wrapper
-│   │       │   └── SummaryTable.jsx          // Tabular report summaries
+│   │       │   ├── ReportFilterBar.jsx       // 📄 PURPOSE: Advanced filters for reports
+│   │       │   │                        // EXAMPLE: Filter bar with Date Range, Category, Product, Region, Customer Type dropdowns
+│   │       │   ├── ReportChart.jsx           // 📄 PURPOSE: Reusable chart wrapper for reports
+│   │       │   │                        // EXAMPLE: Configurable chart component supporting line, bar, pie, area charts
+│   │       │   └── SummaryTable.jsx          // 📄 PURPOSE: Tabular summary of report data
+│   │       │                        // EXAMPLE: Table showing key metrics: Total Revenue, Total Orders, Average Order Value, Profit Margin
 │   │       ├── api/
-│   │       │   └── reportsApi.js             // Fetch aggregated analytics APIs
-│   │       └── index.js
+│   │       │   └── reportsApi.js             // 📄 PURPOSE: Fetch aggregated report data
+│   │       │                        // EXAMPLE: getFinancialReport(filters) calls GET /api/reports/financial with date range and filters
+│   │       └── index.js             // 📄 PURPOSE: Export all ReportsAnalytics components
 │   │
 │   ├── store/                       // Redux store
 │   │   ├── index.js                 // Store creation

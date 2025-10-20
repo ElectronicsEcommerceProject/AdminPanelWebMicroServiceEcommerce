@@ -1,30 +1,24 @@
-import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import FormInput from '../components/FormInput';
-import Button from '../components/Button';
-
-const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { login } = useAuth();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login({ email }, 'dummy-token');
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
-        <h2 className="text-2xl font-bold mb-6">Admin Login</h2>
-        <form onSubmit={handleSubmit}>
-          <FormInput label="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <FormInput label="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button type="submit">Login</Button>
-        </form>
-      </div>
-    </div>
-  );
-};
-
-export default LoginPage;
+/**
+ * PURPOSE: Admin login page for authentication
+ * 
+ * LOGIC:
+ * - Import useAuth hook to access login function
+ * - Import FormInput and Button components
+ * - Manage state: email, password using useState
+ * - handleSubmit function:
+ *   - Prevent default form submission
+ *   - Call API POST /api/auth/login with { email, password }
+ *   - On success: Get user data and token from response
+ *   - Call login(userData, token) from useAuth
+ *   - Redirect to /dashboard using navigate
+ *   - On error: Show error toast
+ * - Render centered login form with:
+ *   - Email input field
+ *   - Password input field
+ *   - Login button
+ *   - Optional: "Forgot Password?" link
+ * 
+ * EXAMPLE:
+ * User enters admin@example.com and password123
+ * Submits form -> API call -> Success -> Redirects to /dashboard
+ */

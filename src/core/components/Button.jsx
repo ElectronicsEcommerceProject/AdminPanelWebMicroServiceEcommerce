@@ -1,17 +1,20 @@
-import React from 'react';
-
-const Button = ({ children, variant = 'primary', onClick, ...props }) => {
-  const variants = {
-    primary: 'bg-blue-500 hover:bg-blue-600 text-white',
-    danger: 'bg-red-500 hover:bg-red-600 text-white',
-    success: 'bg-green-500 hover:bg-green-600 text-white',
-  };
-
-  return (
-    <button onClick={onClick} className={`px-4 py-2 rounded ${variants[variant]}`} {...props}>
-      {children}
-    </button>
-  );
-};
-
-export default Button;
+/**
+ * PURPOSE: Reusable button component with different variants
+ * 
+ * LOGIC:
+ * - Accept props: children (button text), variant (style type), onClick (handler), ...props (other attributes)
+ * - Define variant styles:
+ *   - primary: blue background, hover darker blue, white text
+ *   - danger: red background, hover darker red, white text
+ *   - success: green background, hover darker green, white text
+ *   - secondary: gray background, hover darker gray, white text
+ * - Render button element with:
+ *   - onClick handler
+ *   - Tailwind classes: px-4 py-2 rounded
+ *   - Dynamic variant class
+ *   - Spread remaining props (type, disabled, etc.)
+ * 
+ * EXAMPLE:
+ * <Button variant="primary" onClick={handleSave}>Save</Button> -> Blue button
+ * <Button variant="danger" onClick={handleDelete}>Delete</Button> -> Red button
+ */

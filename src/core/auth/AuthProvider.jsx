@@ -1,32 +1,20 @@
-import React, { createContext, useState, useEffect } from 'react';
-
-export const AuthContext = createContext();
-
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
-
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem('token', token);
-    } else {
-      localStorage.removeItem('token');
-    }
-  }, [token]);
-
-  const login = (userData, authToken) => {
-    setUser(userData);
-    setToken(authToken);
-  };
-
-  const logout = () => {
-    setUser(null);
-    setToken(null);
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+/**
+ * PURPOSE: Provide authentication context to entire app
+ * 
+ * LOGIC:
+ * - Create AuthContext using createContext()
+ * - Create AuthProvider component that wraps children
+ * - Manage state: user (user object), token (JWT token)
+ * - Initialize token from localStorage.getItem('token')
+ * - useEffect: Sync token with localStorage when it changes
+ *   - If token exists: localStorage.setItem('token', token)
+ *   - If token is null: localStorage.removeItem('token')
+ * - Provide login function: setUser(userData), setToken(authToken)
+ * - Provide logout function: setUser(null), setToken(null)
+ * - Return AuthContext.Provider with value: { user, token, login, logout }
+ * 
+ * EXAMPLE:
+ * <AuthProvider>
+ *   <App /> // All children can access user, token, login, logout via useContext(AuthContext)
+ * </AuthProvider>
+ */

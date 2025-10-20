@@ -1,28 +1,21 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from '../core/auth/LoginPage';
-import ProtectedRoute from '../core/auth/ProtectedRoute';
-import AdminLayout from '../core/layout/AdminLayout';
-import { DashboardPage } from '../features/Dashboard';
-import { UserListPage } from '../features/UserManagement';
-
-const AppRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<Navigate to="/dashboard" />} />
-      <Route path="/*" element={
-        <ProtectedRoute>
-          <AdminLayout>
-            <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/users" element={<UserListPage />} />
-            </Routes>
-          </AdminLayout>
-        </ProtectedRoute>
-      } />
-    </Routes>
-  );
-};
-
-export default AppRoutes;
+/**
+ * PURPOSE: Main routing configuration for the application
+ * 
+ * LOGIC:
+ * - Import Routes, Route, Navigate from react-router-dom
+ * - Import LoginPage, ProtectedRoute, AdminLayout
+ * - Import all feature pages (Dashboard, Users, Products, Orders, etc.)
+ * - Define route structure:
+ *   - /login -> LoginPage (public route)
+ *   - / -> Redirect to /dashboard
+ *   - All other routes wrapped in ProtectedRoute and AdminLayout:
+ *     - /dashboard -> DashboardPage
+ *     - /users -> UserListPage, /users/:id -> UserDetailsPage
+ *     - /products -> ProductListPage, /products/create -> ProductCreatePage
+ *     - /orders -> OrderListPage, /orders/:id -> OrderDetailsPage
+ *     - /payments, /promotions, /reviews, /inventory, /stores, /notifications
+ *     - /banners, /cms, /rbac, /analytics, /reports
+ * 
+ * EXAMPLE:
+ * User visits /dashboard -> Checks auth -> Shows AdminLayout with DashboardPage
+ */

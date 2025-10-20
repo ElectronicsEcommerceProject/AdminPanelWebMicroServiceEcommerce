@@ -1,13 +1,20 @@
-import React from 'react';
-
-const Badge = ({ status, children }) => {
-  const colors = {
-    active: 'bg-green-100 text-green-800',
-    inactive: 'bg-gray-100 text-gray-800',
-    banned: 'bg-red-100 text-red-800',
-  };
-
-  return <span className={`px-2 py-1 rounded text-xs ${colors[status] || colors.active}`}>{children}</span>;
-};
-
-export default Badge;
+/**
+ * PURPOSE: Reusable badge component for status indicators
+ * 
+ * LOGIC:
+ * - Accept props: status (string), children (text to display)
+ * - Define color mapping object:
+ *   - active: green background, green text
+ *   - inactive: gray background, gray text
+ *   - banned: red background, red text
+ *   - pending: yellow background, yellow text
+ *   - approved: blue background, blue text
+ * - Render span with:
+ *   - Tailwind classes: px-2 py-1 rounded text-xs
+ *   - Dynamic color based on status prop
+ *   - Display children text inside
+ * 
+ * EXAMPLE:
+ * <Badge status="active">Active</Badge> -> Green badge with "Active" text
+ * <Badge status="banned">Banned</Badge> -> Red badge with "Banned" text
+ */

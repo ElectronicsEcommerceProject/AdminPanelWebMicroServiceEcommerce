@@ -1,10 +1,19 @@
-:root {
-  --color-primary: #3B82F6;
-  --color-secondary: #10B981;
-  --color-danger: #EF4444;
-  --color-warning: #F59E0B;
-  --color-info: #06B6D4;
-  --color-gray-50: #F9FAFB;
-  --color-gray-100: #F3F4F6;
-  --color-gray-800: #1F2937;
-}
+/**
+ * PURPOSE: CSS custom properties (variables) for theming
+ * 
+ * LOGIC:
+ * - Define CSS variables in :root selector for global access
+ * - Color variables:
+ *   - --color-primary: Blue (#3B82F6)
+ *   - --color-secondary: Green (#10B981)
+ *   - --color-danger: Red (#EF4444)
+ *   - --color-warning: Orange (#F59E0B)
+ *   - --color-info: Cyan (#06B6D4)
+ *   - Gray scale: --color-gray-50 to --color-gray-900
+ * - Can add spacing, font, shadow variables
+ * - Use in CSS: background-color: var(--color-primary);
+ * - Enables easy theme switching (light/dark mode)
+ * 
+ * EXAMPLE:
+ * .button { background-color: var(--color-primary); }
+ */

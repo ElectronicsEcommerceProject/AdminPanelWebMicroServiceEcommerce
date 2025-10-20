@@ -1,15 +1,18 @@
-export const USER_ROLES = {
-  ADMIN: 'admin',
-  CUSTOMER: 'customer',
-  RETAILER: 'retailer',
-};
-
-export const ORDER_STATUS = {
-  PENDING: 'pending',
-  PROCESSING: 'processing',
-  SHIPPED: 'shipped',
-  DELIVERED: 'delivered',
-  CANCELLED: 'cancelled',
-};
-
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:3000';
+/**
+ * PURPOSE: Application-wide constants and enums
+ * 
+ * LOGIC:
+ * - Define USER_ROLES object: ADMIN, CUSTOMER, RETAILER
+ * - Define ORDER_STATUS object: PENDING, PROCESSING, SHIPPED, DELIVERED, CANCELLED, REFUNDED
+ * - Define PAYMENT_STATUS: PENDING, COMPLETED, FAILED, REFUNDED
+ * - Define PAYMENT_METHODS: CREDIT_CARD, DEBIT_CARD, UPI, NET_BANKING, COD, WALLET
+ * - Define PRODUCT_STATUS: ACTIVE, INACTIVE, OUT_OF_STOCK
+ * - Define REVIEW_STATUS: PENDING, APPROVED, REJECTED
+ * - Define NOTIFICATION_CHANNELS: EMAIL, SMS, PUSH
+ * - Define API_BASE_URL from environment variable or default
+ * - Define ITEMS_PER_PAGE: 10, 20, 50, 100
+ * 
+ * EXAMPLE:
+ * import { ORDER_STATUS } from './constants';
+ * if (order.status === ORDER_STATUS.PENDING) { ... }
+ */

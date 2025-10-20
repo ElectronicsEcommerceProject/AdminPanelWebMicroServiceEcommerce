@@ -1,11 +1,14 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/**
+ * PURPOSE: Global CSS reset and base styles
+ * 
+ * LOGIC:
+ * - Reset all elements: margin: 0, padding: 0, box-sizing: border-box
+ * - Set body font-family to system fonts (Apple, Segoe UI, Roboto, etc.)
+ * - Enable font smoothing for better text rendering
+ * - Set default text color, background color
+ * - Define base font size (16px)
+ * 
+ * EXAMPLE:
+ * * { margin: 0; padding: 0; box-sizing: border-box; }
+ * body { font-family: 'Segoe UI', sans-serif; }
+ */

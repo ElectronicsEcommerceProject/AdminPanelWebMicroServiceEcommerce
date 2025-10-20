@@ -1,19 +1,21 @@
-import React from 'react';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import Footer from './Footer';
-
-const AdminLayout = ({ children }) => {
-  return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <Header />
-        <main className="flex-1 overflow-auto p-6 bg-gray-50">{children}</main>
-        <Footer />
-      </div>
-    </div>
-  );
-};
-
-export default AdminLayout;
+/**
+ * PURPOSE: Main layout wrapper for all admin pages
+ * 
+ * LOGIC:
+ * - Import Sidebar, Header, Footer components
+ * - Accept children prop (page content)
+ * - Create flex layout with full screen height
+ * - Left side: Render Sidebar (fixed width, dark background)
+ * - Right side: Flex column container with:
+ *   - Header at top (white background, shadow)
+ *   - Main content area (flex-1, scrollable, padding, gray background)
+ *   - Footer at bottom (white background, border-top)
+ * - Render children inside main content area
+ * - This layout wraps all protected routes
+ * 
+ * EXAMPLE:
+ * <AdminLayout>
+ *   <DashboardPage /> // Page content goes here
+ * </AdminLayout>
+ * Shows sidebar on left, header on top, page content in center, footer at bottom
+ */

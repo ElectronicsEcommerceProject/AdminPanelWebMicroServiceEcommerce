@@ -1,3 +1,12 @@
-export { default as AppRoutes } from './AppRoutes';
-export { default as AuthRoutes } from './AuthRoutes';
-export { default as ProtectedRoutes } from './ProtectedRoutes';
+/**
+ * PURPOSE: Barrel export file for routes
+ * 
+ * LOGIC:
+ * - Export AppRoutes, AuthRoutes, ProtectedRoutes from single file
+ * - Allows importing multiple route components from one location
+ * - Simplifies imports in other files
+ * 
+ * EXAMPLE:
+ * import { AppRoutes, AuthRoutes } from './routes';
+ * Instead of separate imports from each file
+ */

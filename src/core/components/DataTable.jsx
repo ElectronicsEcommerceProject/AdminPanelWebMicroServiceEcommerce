@@ -1,28 +1,19 @@
-import React from 'react';
-
-const DataTable = ({ columns, data }) => {
-  return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border">
-        <thead className="bg-gray-100">
-          <tr>
-            {columns.map((col) => (
-              <th key={col.key} className="px-4 py-2 border">{col.label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((row, idx) => (
-            <tr key={idx}>
-              {columns.map((col) => (
-                <td key={col.key} className="px-4 py-2 border">{row[col.key]}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-export default DataTable;
+/**
+ * PURPOSE: Reusable data table component with sorting, filtering, pagination
+ * 
+ * LOGIC:
+ * - Accept props: columns (array of column definitions), data (array of row objects), onSort, onFilter
+ * - columns format: [{ key: 'id', label: 'ID', sortable: true, render: (value) => ... }]
+ * - Render table structure:
+ *   - thead: Map columns to th elements with labels
+ *   - tbody: Map data rows to tr elements
+ *   - For each row, map columns to td elements using row[col.key]
+ * - Add sorting: Click column header to sort by that column (asc/desc)
+ * - Add custom render: If column has render function, use it to format cell value
+ * - Add row actions: Optional actions column with edit/delete buttons
+ * - Wrap in overflow-x-auto div for horizontal scrolling on mobile
+ * 
+ * EXAMPLE:
+ * <DataTable columns={[{key:'id', label:'ID'}, {key:'name', label:'Name'}]} data={users} />
+ * Renders table with ID and Name columns showing user data
+ */

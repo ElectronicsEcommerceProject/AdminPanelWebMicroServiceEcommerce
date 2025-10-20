@@ -261,35 +261,19 @@
 │   │   │   │   └── notificationApi.js // API: sendBulkNotification(), manageTemplates(), getNotificationStats()
 │   │   │   └── index.js
 │   │   │
-│   │   ├── CmsManagement/           // CMS Management (Banners, Content)
+│   │   ├── BannerManagement/        // Banner Management (Homepage Banners, Promotional Banners)
 │   │   │   ├── pages/
 │   │   │   │   ├── BannerListPage.jsx    // Banners list
 │   │   │   │   ├── BannerCreatePage.jsx  // Create banner
 │   │   │   │   └── BannerEditPage.jsx    // Edit banner
 │   │   │   ├── components/
-│   │   │   │   ├── BannerForm.jsx           // Banner form
+│   │   │   │   ├── BannerForm.jsx           // Banner form (title, image, link, position)
 │   │   │   │   ├── BannerPreview.jsx        // Banner preview
-│   │   │   │   ├── SortableBanners.jsx      // Drag-and-drop banner list
-│   │   │   │   ├── BannerImageUploader.jsx  // Image uploader
+│   │   │   │   ├── SortableBanners.jsx      // Drag-and-drop banner list for ordering
+│   │   │   │   ├── BannerImageUploader.jsx  // Image uploader with crop
 │   │   │   │   └── BannerStatusToggle.jsx   // Active/inactive toggle
 │   │   │   ├── api/
-│   │   │   │   └── cmsApi.js        // API: getBanners(), createBanner(), updateBanner(), deleteBanner()
-│   │   │   └── index.js
-│   │   │
-│   │   ├── RBACManagement/          // RBAC Management (Roles & Permissions)
-│   │   │   ├── pages/
-│   │   │   │   ├── RoleListPage.jsx          // Roles list
-│   │   │   │   ├── RoleCreatePage.jsx        // Create role
-│   │   │   │   ├── RoleEditPage.jsx          // Edit role
-│   │   │   │   └── PermissionAssignPage.jsx  // Assign permissions
-│   │   │   ├── components/
-│   │   │   │   ├── RoleTable.jsx             // Roles table
-│   │   │   │   ├── RoleForm.jsx              // Role form
-│   │   │   │   ├── PermissionTree.jsx        // Permission tree with checkboxes
-│   │   │   │   ├── PermissionCheckbox.jsx    // Permission checkbox
-│   │   │   │   └── UserRoleAssignment.jsx    // Assign roles to users
-│   │   │   ├── api/
-│   │   │   │   └── rbacApi.js       // API: createRole(), assignPermissions(), getRolePermissions()
+│   │   │   │   └── bannerApi.js     // API: getBanners(), createBanner(), updateBanner(), deleteBanner(), reorderBanners()
 │   │   │   └── index.js
 │   │   │
 │   │   │

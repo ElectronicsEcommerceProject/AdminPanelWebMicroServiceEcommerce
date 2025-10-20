@@ -1,0 +1,556 @@
+# ADMIN PANEL FRONTEND - COMPLETE FOLDER STRUCTURE
+# Aligned with Backend Microservices & Database Models
+# Purpose-Driven Explanation for Beginners
+
+/admin-panel-frontend/
+│
+├── public/                          // 📁 PURPOSE: Static files that don't need processing, served directly to browser
+│   ├── index.html                   // 📄 PURPOSE: Main HTML file where React app mounts, contains root div element
+│   ├── favicon.ico                  // 🖼️ PURPOSE: Small icon displayed in browser tab
+│   ├── manifest.json                // 📋 PURPOSE: PWA configuration for making app installable on mobile devices
+│   └── assets/                      // 📁 PURPOSE: Store static images, logos, icons that won't change
+│       ├── logo.png                 // 🖼️ PURPOSE: Admin panel logo image displayed in header/sidebar
+│       └── icons/                   // 📁 PURPOSE: SVG icon files for UI elements (dashboard icon, user icon, etc.)
+│
+├── src/                             // 📁 PURPOSE: Main source code folder containing all React components and logic
+│   ├── index.js                     // 📄 PURPOSE: Entry point that renders React app into HTML, connects App to DOM
+│   ├── App.js                       // 📄 PURPOSE: Root component that wraps entire app with Router, Redux Provider, Auth
+│   ├── App.css                      // 📄 PURPOSE: Global CSS styles applied across entire application
+│   │
+│   ├── core/                        // 📁 PURPOSE: Shared/reusable code used across all features (not feature-specific)
+│   │   ├── layout/                  // 📁 PURPOSE: Layout structure components that wrap page content
+│   │   │   ├── AdminLayout.jsx      // 📄 PURPOSE: Main wrapper containing Sidebar + Header + content area where pages render
+│   │   │   ├── Sidebar.jsx          // 📄 PURPOSE: Left navigation menu with links to Dashboard, Users, Products, Orders
+│   │   │   ├── Header.jsx           // 📄 PURPOSE: Top bar showing admin name, profile picture, notifications, logout button
+│   │   │   └── Footer.jsx           // 📄 PURPOSE: Bottom footer with copyright, links (optional)
+│   │   │
+│   │   ├── components/              // 📁 PURPOSE: Reusable UI building blocks used across multiple features
+│   │   │   ├── DataTable.jsx        // 📄 PURPOSE: Reusable table component with sorting, pagination, search, CSV export
+│   │   │   ├── StatCard.jsx         // 📄 PURPOSE: Card component to display key metrics (Total Users: 1,234)
+│   │   │   ├── Chart.jsx            // 📄 PURPOSE: Wrapper for chart libraries (Recharts/Chart.js) for graphs
+│   │   │   ├── Modal.jsx            // 📄 PURPOSE: Popup dialog for confirmations, forms (Are you sure to delete?)
+│   │   │   ├── FormInput.jsx        // 📄 PURPOSE: Reusable input fields with built-in validation (email, required)
+│   │   │   ├── Button.jsx           // 📄 PURPOSE: Styled button with variants (primary, danger, success)
+│   │   │   ├── LoadingSpinner.jsx   // 📄 PURPOSE: Spinning loader shown during API calls/data fetching
+│   │   │   ├── Badge.jsx            // 📄 PURPOSE: Colored status indicators (Active=green, Banned=red)
+│   │   │   ├── Dropdown.jsx         // 📄 PURPOSE: Dropdown select menu component
+│   │   │   ├── SearchBar.jsx        // 📄 PURPOSE: Search input with debounce (waits 500ms before searching)
+│   │   │   ├── Pagination.jsx       // 📄 PURPOSE: Page navigation (Previous, 1, 2, 3, Next)
+│   │   │   ├── FileUploader.jsx     // 📄 PURPOSE: Drag-and-drop file upload component
+│   │   │   ├── DateRangePicker.jsx  // 📄 PURPOSE: Calendar component to select date range (From - To)
+│   │   │   └── Toast.jsx            // 📄 PURPOSE: Temporary notification messages (Success! User created)
+│   │   │
+│   │   ├── api/                     // 📁 PURPOSE: Central API configuration for all backend communication
+│   │   │   ├── apiService.js        // 📄 PURPOSE: Axios setup with base URL (http://localhost:3000), timeout, headers
+│   │   │   ├── authInterceptor.js   // 📄 PURPOSE: Automatically attach JWT token to every API request, handle 401 errors
+│   │   │   └── errorHandler.js      // 📄 PURPOSE: Catch and display API errors globally (network error, server error)
+│   │   │
+│   │   ├── auth/                    // 📁 PURPOSE: Authentication and authorization logic
+│   │   │   ├── AuthProvider.jsx     // 📄 PURPOSE: React Context to share auth state (user, token) across app
+│   │   │   ├── LoginPage.jsx        // 📄 PURPOSE: Login form with email/password inputs, calls backend /auth/login
+│   │   │   ├── ProtectedRoute.jsx   // 📄 PURPOSE: Wrapper that redirects to login if user not authenticated
+│   │   │   ├── Logout.jsx           // 📄 PURPOSE: Logout button that clears token and redirects to login
+│   │   │   └── authSlice.js         // 📄 PURPOSE: Redux state management for auth (login, logout actions)
+│   │   │
+│   │   ├── utils/                   // 📁 PURPOSE: Utility/helper functions used across app
+│   │   │   ├── formatters.js        // 📄 PURPOSE: Format data (date: "2024-01-15" → "Jan 15, 2024", currency: 1500 → "₹1,500")
+│   │   │   ├── validators.js        // 📄 PURPOSE: Validate inputs (isValidEmail, isRequired, isValidPhone)
+│   │   │   ├── constants.js         // 📄 PURPOSE: Store constants (USER_ROLES, ORDER_STATUS, API_BASE_URL)
+│   │   │   └── helpers.js           // 📄 PURPOSE: Miscellaneous helper functions (generateId, slugify)
+│   │   │
+│   │   └── hooks/                   // 📁 PURPOSE: Custom React hooks for reusable logic
+│   │       ├── useAuth.js           // 📄 PURPOSE: Hook to access auth state (user, token, logout)
+│   │       ├── useApi.js            // 📄 PURPOSE: Hook for API calls with loading/error states
+│   │       ├── useDebounce.js       // 📄 PURPOSE: Delay function execution (search after user stops typing)
+│   │       ├── usePagination.js     // 📄 PURPOSE: Handle pagination logic (currentPage, totalPages, nextPage)
+│   │       └── useToast.js          // 📄 PURPOSE: Show toast notifications (success, error, warning)
+│   │
+│   ├── features/                    // 📁 PURPOSE: Feature modules - each feature is self-contained with pages, components, API
+│   │   │
+│   │   ├── Dashboard/               // 📊 FEATURE: Dashboard Overview - Main landing page after login
+│   │   │   ├── pages/               // 📁 PURPOSE: Full-page views for this feature
+│   │   │   │   └── DashboardPage.jsx // 📄 PURPOSE: Main dashboard page showing overview stats, charts, recent activity
+│   │   │   ├── components/          // 📁 PURPOSE: UI components specific to Dashboard feature
+│   │   │   │   ├── OverviewStats.jsx // 📄 PURPOSE: Display key metrics cards (Total Users, Revenue, Orders)
+│   │   │   │   ├── RecentOrders.jsx  // 📄 PURPOSE: Show last 10 orders in table format
+│   │   │   │   ├── RecentUsers.jsx   // 📄 PURPOSE: Show recently registered users
+│   │   │   │   ├── SalesChart.jsx    // 📄 PURPOSE: Line/bar chart showing sales trends over time
+│   │   │   │   ├── RevenueChart.jsx  // 📄 PURPOSE: Chart displaying revenue analytics
+│   │   │   │   ├── TopProducts.jsx   // 📄 PURPOSE: List of best-selling products
+│   │   │   │   └── LowStockAlert.jsx // 📄 PURPOSE: Widget showing products with low stock levels
+│   │   │   ├── api/                 // 📁 PURPOSE: API calls specific to Dashboard
+│   │   │   │   └── dashboardApi.js  // 📄 PURPOSE: Functions to fetch dashboard data from backend
+│   │   │   └── index.js             // 📄 PURPOSE: Export all Dashboard components for easy imports
+│   │   │
+│   │   ├── UserManagement/          // User Management (Service 1: User Management)
+│   │   │   ├── pages/
+│   │   │   │   ├── UserListPage.jsx      // All users list with filters
+│   │   │   │   ├── UserDetailsPage.jsx   // View user details
+│   │   │   │   ├── UserEditPage.jsx      // Edit user
+│   │   │   │   ├── AddressListPage.jsx   // User addresses management
+│   │   │   │   └── OwnerListPage.jsx     // Store owners list
+│   │   │   ├── components/
+│   │   │   │   ├── UserForm.jsx          // User create/edit form
+│   │   │   │   ├── UserTable.jsx         // Users data table
+│   │   │   │   ├── UserStatusBadge.jsx   // Status badge (active, inactive, banned)
+│   │   │   │   ├── BanUserModal.jsx      // Ban user modal with reason
+│   │   │   │   ├── UserRoleSelector.jsx  // Role selector (customer, retailer, admin)
+│   │   │   │   ├── AddressForm.jsx       // Address form
+│   │   │   │   ├── AddressCard.jsx       // Address display card
+│   │   │   │   └── UserActions.jsx       // Action dropdown (edit, ban, delete)
+│   │   │   ├── api/
+│   │   │   │   ├── userApi.js       // API: getAllUsers(), createUser(), updateUser(), banUser(), deleteUser()
+│   │   │   │   ├── addressApi.js    // API: getUserAddresses(), createAddress(), updateAddress(), deleteAddress()
+│   │   │   │   └── ownerApi.js      // API: getAllOwners(), getOwnerDetails(), updateOwner()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── ProductManagement/       // Product Catalog (Service 2: Product Catalog)
+│   │   │   ├── pages/
+│   │   │   │   ├── ProductListPage.jsx       // All products list
+│   │   │   │   ├── ProductCreatePage.jsx     // Create new product
+│   │   │   │   ├── ProductEditPage.jsx       // Edit product
+│   │   │   │   ├── ProductDetailsPage.jsx    // View product details
+│   │   │   │   ├── CategoryListPage.jsx      // Categories management
+│   │   │   │   ├── CategoryCreatePage.jsx    // Create category
+│   │   │   │   ├── BrandListPage.jsx         // Brands management
+│   │   │   │   ├── BrandCreatePage.jsx       // Create brand
+│   │   │   │   ├── AttributeListPage.jsx     // Attributes management (Color, Size, etc.)
+│   │   │   │   └── VariantManagementPage.jsx // Product variants management
+│   │   │   ├── components/
+│   │   │   │   ├── ProductForm.jsx           // Product form (name, description, price, category, brand)
+│   │   │   │   ├── ProductTable.jsx          // Products data table
+│   │   │   │   ├── VariantForm.jsx           // Variant form (price, stock, SKU, attributes)
+│   │   │   │   ├── VariantTable.jsx          // Variants table with inline editing
+│   │   │   │   ├── MediaUploader.jsx         // Product media uploader (images/videos)
+│   │   │   │   ├── MediaGallery.jsx          // Media gallery display
+│   │   │   │   ├── CategoryTree.jsx          // Hierarchical category tree
+│   │   │   │   ├── CategoryForm.jsx          // Category form (name, parent, target_role)
+│   │   │   │   ├── BrandForm.jsx             // Brand form
+│   │   │   │   ├── AttributeForm.jsx         // Attribute form (name, data_type)
+│   │   │   │   ├── AttributeValueForm.jsx    // Attribute value form
+│   │   │   │   ├── ProductStatusToggle.jsx   // Active/inactive toggle
+│   │   │   │   ├── FeaturedToggle.jsx        // Featured product toggle
+│   │   │   │   └── DiscountForm.jsx          // Discount settings (quantity, percentage)
+│   │   │   ├── api/
+│   │   │   │   ├── productApi.js    // API: getAllProducts(), createProduct(), updateProduct(), deleteProduct()
+│   │   │   │   ├── categoryApi.js   // API: getAllCategories(), createCategory(), updateCategory(), deleteCategory()
+│   │   │   │   ├── brandApi.js      // API: getAllBrands(), createBrand(), updateBrand(), deleteBrand()
+│   │   │   │   ├── variantApi.js    // API: getVariants(), createVariant(), updateVariant(), deleteVariant()
+│   │   │   │   ├── attributeApi.js  // API: getAttributes(), createAttribute(), getAttributeValues()
+│   │   │   │   └── mediaApi.js      // API: uploadMedia(), deleteMedia(), getProductMedia()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── OrderManagement/         // Order Management (Service 4: Order Management)
+│   │   │   ├── pages/
+│   │   │   │   ├── OrderListPage.jsx     // All orders list with filters
+│   │   │   │   └── OrderDetailsPage.jsx  // Order details with items, payment, shipping
+│   │   │   ├── components/
+│   │   │   │   ├── OrderTable.jsx            // Orders data table
+│   │   │   │   ├── OrderStatusBadge.jsx      // Status badge (pending, processing, shipped, delivered, cancelled)
+│   │   │   │   ├── OrderStatusUpdater.jsx    // Status update dropdown
+│   │   │   │   ├── OrderItemsTable.jsx       // Order items table
+│   │   │   │   ├── OrderSummary.jsx          // Order summary (subtotal, tax, shipping, total)
+│   │   │   │   ├── ShippingDetails.jsx       // Shipping address and tracking
+│   │   │   │   ├── PaymentDetails.jsx        // Payment method and status
+│   │   │   │   ├── RefundModal.jsx           // Refund processing modal
+│   │   │   │   ├── CancelOrderModal.jsx      // Cancel order modal
+│   │   │   │   └── TrackingNumberForm.jsx    // Add tracking number form
+│   │   │   ├── api/
+│   │   │   │   └── orderApi.js      // API: getAllOrders(), getOrderById(), updateOrderStatus(), cancelOrder()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── PaymentManagement/       // Payment Management (Service 5: Payment)
+│   │   │   ├── pages/
+│   │   │   │   ├── PaymentListPage.jsx    // All payments list
+│   │   │   │   └── PaymentDetailsPage.jsx // Payment details
+│   │   │   ├── components/
+│   │   │   │   ├── PaymentTable.jsx           // Payments data table
+│   │   │   │   ├── PaymentStatusBadge.jsx     // Status badge (pending, paid, failed, refunded)
+│   │   │   │   ├── PaymentMethodBadge.jsx     // Payment method badge
+│   │   │   │   ├── RefundForm.jsx             // Refund form
+│   │   │   │   ├── TransactionDetails.jsx     // Transaction details display
+│   │   │   │   └── PaymentAnalytics.jsx       // Payment analytics charts
+│   │   │   ├── api/
+│   │   │   │   └── paymentApi.js    // API: getAllPayments(), getPaymentById(), processRefund()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── PromotionManagement/     // Promotion Management (Service 6: Promotion)
+│   │   │   ├── pages/
+│   │   │   │   ├── CouponListPage.jsx        // All coupons list
+│   │   │   │   ├── CouponCreatePage.jsx      // Create coupon
+│   │   │   │   ├── CouponEditPage.jsx        // Edit coupon
+│   │   │   │   ├── DiscountRuleListPage.jsx  // Discount rules list
+│   │   │   │   └── DiscountRuleCreatePage.jsx // Create discount rule
+│   │   │   ├── components/
+│   │   │   │   ├── CouponForm.jsx            // Coupon form (code, type, discount_value, target_type, validity)
+│   │   │   │   ├── CouponTable.jsx           // Coupons data table
+│   │   │   │   ├── CouponTypeBadge.jsx       // Type badge (fixed, percentage)
+│   │   │   │   ├── CouponTargetSelector.jsx  // Target selector (cart, product, category, brand)
+│   │   │   │   ├── CouponRoleSelector.jsx    // Role selector (customer, retailer, both)
+│   │   │   │   ├── UsageStatsChart.jsx       // Coupon usage analytics
+│   │   │   │   ├── RedemptionHistory.jsx     // Redemption history table
+│   │   │   │   ├── DiscountRuleForm.jsx      // Discount rule form (bulk, quantity, retailer)
+│   │   │   │   └── DiscountRuleTable.jsx     // Discount rules table
+│   │   │   ├── api/
+│   │   │   │   ├── couponApi.js     // API: getAllCoupons(), createCoupon(), updateCoupon(), deleteCoupon()
+│   │   │   │   └── discountApi.js   // API: getDiscountRules(), createDiscountRule(), updateDiscountRule()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── ReviewManagement/        // Review Management (Service 7: Review)
+│   │   │   ├── pages/
+│   │   │   │   ├── ReviewListPage.jsx     // All reviews list with filters
+│   │   │   │   └── ReviewModeratePage.jsx // Review moderation page
+│   │   │   ├── components/
+│   │   │   │   ├── ReviewTable.jsx           // Reviews data table
+│   │   │   │   ├── ReviewCard.jsx            // Review display card
+│   │   │   │   ├── ReviewActionBadge.jsx     // Action badge (pending, approve, reject, flag)
+│   │   │   │   ├── ModerationActions.jsx     // Moderation buttons
+│   │   │   │   ├── RatingDisplay.jsx         // Star rating display
+│   │   │   │   ├── VerifiedPurchaseBadge.jsx // Verified purchase badge
+│   │   │   │   └── ReviewAnalytics.jsx       // Review analytics
+│   │   │   ├── api/
+│   │   │   │   └── reviewApi.js     // API: getAllReviews(), moderateReview(), deleteReview()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── InventoryManagement/     // Inventory Management (Service 8: Inventory)
+│   │   │   ├── pages/
+│   │   │   │   ├── InventoryListPage.jsx  // Stock levels list
+│   │   │   │   └── StockAlertPage.jsx     // Stock alerts management
+│   │   │   ├── components/
+│   │   │   │   ├── InventoryTable.jsx        // Inventory data table
+│   │   │   │   ├── StockLevelBadge.jsx       // Stock level badge (low, out-of-stock)
+│   │   │   │   ├── StockUpdateForm.jsx       // Update stock form
+│   │   │   │   ├── AlertHistory.jsx          // Alert history timeline
+│   │   │   │   ├── LowStockTable.jsx         // Low stock products table
+│   │   │   │   └── StockAnalytics.jsx        // Stock analytics charts
+│   │   │   ├── api/
+│   │   │   │   └── inventoryApi.js  // API: getStockAlerts(), updateInventory(), getInventoryReports()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── StoreManagement/         // Store Management (Service 9: Store Management)
+│   │   │   ├── pages/
+│   │   │   │   ├── StoreListPage.jsx     // All stores list
+│   │   │   │   └── StoreDetailsPage.jsx  // Store details
+│   │   │   ├── components/
+│   │   │   │   ├── StoreTable.jsx           // Stores data table
+│   │   │   │   ├── StoreForm.jsx            // Store form
+│   │   │   │   ├── StoreStatusBadge.jsx     // Status badge (active, inactive)
+│   │   │   │   ├── StoreApprovalForm.jsx    // Approval form
+│   │   │   │   ├── StoreStats.jsx           // Store metrics cards
+│   │   │   │   └── OwnerDetails.jsx         // Owner information display
+│   │   │   ├── api/
+│   │   │   │   └── storeApi.js      // API: getAllStores(), approveStore(), getStoreAnalytics()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── NotificationManagement/  // Notification Management (Service 10: Notification)
+│   │   │   ├── pages/
+│   │   │   │   ├── NotificationListPage.jsx  // Notifications list
+│   │   │   │   ├── TemplateListPage.jsx      // Templates list
+│   │   │   │   ├── TemplateCreatePage.jsx    // Create template
+│   │   │   │   └── BulkSendPage.jsx          // Bulk send page
+│   │   │   ├── components/
+│   │   │   │   ├── NotificationTable.jsx     // Notifications table
+│   │   │   │   ├── TemplateEditor.jsx        // Rich text editor for templates
+│   │   │   │   ├── TemplateForm.jsx          // Template form
+│   │   │   │   ├── SendForm.jsx              // Send notification form
+│   │   │   │   ├── AudienceSelector.jsx      // Audience selector (all_users, customers, retailers, specific)
+│   │   │   │   ├── ChannelSelector.jsx       // Channel selector (email, sms, in_app)
+│   │   │   │   ├── NotificationStatusBadge.jsx // Status badge (pending, sent, failed)
+│   │   │   │   └── NotificationAnalytics.jsx // Notification analytics
+│   │   │   ├── api/
+│   │   │   │   └── notificationApi.js // API: sendBulkNotification(), manageTemplates(), getNotificationStats()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── CmsManagement/           // CMS Management (Banners, Content)
+│   │   │   ├── pages/
+│   │   │   │   ├── BannerListPage.jsx    // Banners list
+│   │   │   │   ├── BannerCreatePage.jsx  // Create banner
+│   │   │   │   └── BannerEditPage.jsx    // Edit banner
+│   │   │   ├── components/
+│   │   │   │   ├── BannerForm.jsx           // Banner form
+│   │   │   │   ├── BannerPreview.jsx        // Banner preview
+│   │   │   │   ├── SortableBanners.jsx      // Drag-and-drop banner list
+│   │   │   │   ├── BannerImageUploader.jsx  // Image uploader
+│   │   │   │   └── BannerStatusToggle.jsx   // Active/inactive toggle
+│   │   │   ├── api/
+│   │   │   │   └── cmsApi.js        // API: getBanners(), createBanner(), updateBanner(), deleteBanner()
+│   │   │   └── index.js
+│   │   │
+│   │   ├── RBACManagement/          // RBAC Management (Roles & Permissions)
+│   │   │   ├── pages/
+│   │   │   │   ├── RoleListPage.jsx          // Roles list
+│   │   │   │   ├── RoleCreatePage.jsx        // Create role
+│   │   │   │   ├── RoleEditPage.jsx          // Edit role
+│   │   │   │   └── PermissionAssignPage.jsx  // Assign permissions
+│   │   │   ├── components/
+│   │   │   │   ├── RoleTable.jsx             // Roles table
+│   │   │   │   ├── RoleForm.jsx              // Role form
+│   │   │   │   ├── PermissionTree.jsx        // Permission tree with checkboxes
+│   │   │   │   ├── PermissionCheckbox.jsx    // Permission checkbox
+│   │   │   │   └── UserRoleAssignment.jsx    // Assign roles to users
+│   │   │   ├── api/
+│   │   │   │   └── rbacApi.js       // API: createRole(), assignPermissions(), getRolePermissions()
+│   │   │   └── index.js
+│   │   │
+│   │   │
+│   │   ├── Analytics/               // Analytics & Reports
+│   │   │   ├── pages/
+│   │   │   │   ├── SalesReportPage.jsx       // Sales reports
+│   │   │   │   ├── UserReportPage.jsx        // User analytics
+│   │   │   │   ├── ProductReportPage.jsx     // Product performance
+│   │   │   │   ├── OrderReportPage.jsx       // Order analytics
+│   │   │   │   └── RevenueReportPage.jsx     // Revenue analytics
+│   │   │   ├── components/
+│   │   │   │   ├── SalesChart.jsx            // Sales trend chart
+│   │   │   │   ├── RevenueChart.jsx          // Revenue chart
+│   │   │   │   ├── UserGrowthChart.jsx       // User growth chart
+│   │   │   │   ├── ProductPerformanceChart.jsx // Product performance
+│   │   │   │   ├── OrderStatusChart.jsx      // Order status distribution
+│   │   │   │   ├── DateRangeFilter.jsx       // Date range filter
+│   │   │   │   └── ExportButton.jsx          // Export to CSV/PDF
+│   │   │   ├── api/
+│   │   │   │   └── analyticsApi.js  // API: getSalesReport(), getUserReport(), getProductReport()
+│   │   │   └── index.js
+│   │   │
+│   │   └── ReportsAnalytics/        // ✅ Financial & Sales Analytics
+│   │       ├── pages/
+│   │       │   ├── ReportsOverviewPage.jsx   // Main dashboard for reports
+│   │       │   ├── SalesReportPage.jsx       // Charts for sales performance
+│   │       │   ├── UserReportPage.jsx        // Active users, retention, churn
+│   │       │   └── FinancialReportPage.jsx   // Revenue, refunds, profit margins
+│   │       ├── components/
+│   │       │   ├── ReportFilterBar.jsx       // Date range, filters
+│   │       │   ├── ReportChart.jsx           // Chart wrapper
+│   │       │   └── SummaryTable.jsx          // Tabular report summaries
+│   │       ├── api/
+│   │       │   └── reportsApi.js             // Fetch aggregated analytics APIs
+│   │       └── index.js
+│   │
+│   ├── store/                       // Redux store
+│   │   ├── index.js                 // Store creation
+│   │   ├── slices/                  // Redux slices
+│   │   │   ├── authSlice.js         // Auth state
+│   │   │   ├── userSlice.js         // User management state
+│   │   │   ├── productSlice.js      // Product management state
+│   │   │   ├── orderSlice.js        // Order management state
+│   │   │   ├── notificationSlice.js // Notification state
+│   │   │   └── uiSlice.js           // UI state (sidebar, modals, toasts)
+│   │   ├── reducers/
+│   │   │   └── rootReducer.js       // Combines all slices
+│   │   └── middleware/
+│   │       └── logger.js            // Redux logger
+│   │
+│   ├── routes/                      // React Router
+│   │   ├── AppRoutes.jsx            // Main routes
+│   │   ├── AuthRoutes.jsx           // Auth routes
+│   │   ├── ProtectedRoutes.jsx      // Protected routes wrapper
+│   │   └── index.js
+│   │
+│   └── styles/                      // Global styles
+│       ├── global.css               // Base styles
+│       ├── theme.js                 // Theme configuration
+│       ├── variables.css            // CSS variables
+│       └── components/              // Component-specific styles
+│
+├── .env                             // Environment variables
+├── .env.example                     // Example env file
+├── .gitignore                       // Git ignore
+├── package.json                     // Dependencies
+├── README.md                        // Documentation
+├── tailwind.config.js               // Tailwind config
+├── postcss.config.js                // PostCSS config
+└── vite.config.js                   // Vite config (or webpack.config.js)
+
+---
+
+## ✅ FINAL TECH STACK (Professional E-Commerce Admin)
+
+1. **UI Framework**: Material-UI (MUI) - Complete component library
+2. **Icons**: @mui/icons-material + lucide-react
+3. **Styling**: Tailwind CSS + MUI theming
+4. **Charts**: Recharts - Perfect for sales/analytics
+5. **Tables**: @mui/x-data-grid - Advanced features
+6. **Forms**: react-hook-form + yup validation
+7. **Data Fetching**: @tanstack/react-query - Smart caching
+8. **Date Handling**: date-fns - Lightweight
+9. **Notifications**: react-toastify - User feedback
+10. **File Upload**: react-dropzone - Drag & drop
+
+**Total Bundle Size**: ~500KB (gzipped)
+**Performance**: Optimized for 1000+ products, orders
+**Mobile**: Fully responsive on all devices
+
+---
+
+## KEY ALIGNMENTS WITH BACKEND:
+
+### Service 1: User Management (Port 3001)
+- Models: User, Address, Owner
+- Features: UserManagement (users, addresses, owners)
+
+### Service 2: Product Catalog (Port 3002)
+- Models: Product, Category, Brand, ProductVariant, ProductMedia, ProductMediaUrl, Attribute, AttributeValue, VariantAttributeValue, VariantMedia, VariantMediaUrl
+- Features: ProductManagement (products, categories, brands, variants, attributes, media)
+
+### Service 4: Order Management (Port 3004)
+- Models: Order, OrderItem
+- Features: OrderManagement (orders, order items)
+
+### Service 5: Payment (Port 3005)
+- Models: Payment
+- Features: PaymentManagement (payments, refunds)
+
+### Service 6: Promotion (Port 3006)
+- Models: Coupon, CouponRedemption, CouponUser, DiscountRule
+- Features: PromotionManagement (coupons, discount rules)
+
+### Service 7: Review (Port 3007)
+- Models: ProductReview
+- Features: ReviewManagement (reviews, moderation)
+
+### Service 8: Inventory (Port 3008)
+- Models: StockAlert
+- Features: InventoryManagement (stock alerts, inventory)
+
+### Service 9: Store Management (Port 3009)
+- Models: Store
+- Features: StoreManagement (stores, approval)
+
+### Service 10: Notification (Port 3010)
+- Models: Notification
+- Features: NotificationManagement (notifications, templates)
+
+## 📦 PROFESSIONAL E-COMMERCE ADMIN PANEL - TECH STACK
+
+### Complete Dependencies (package.json):
+```json
+{
+  "dependencies": {
+    // Core React
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    
+    // State Management
+    "@reduxjs/toolkit": "^2.0.0",
+    "react-redux": "^9.0.0",
+    
+    // API & Data Fetching
+    "axios": "^1.6.0",
+    "@tanstack/react-query": "^5.0.0",
+    
+    // UI Framework - Material-UI (Professional & Complete)
+    "@mui/material": "^5.14.0",
+    "@mui/icons-material": "^5.14.0",
+    "@mui/x-data-grid": "^6.18.0",
+    "@mui/x-date-pickers": "^6.18.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    
+    // Styling
+    "tailwindcss": "^3.4.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.0.0",
+    
+    // Icons
+    "lucide-react": "^0.292.0",
+    
+    // Forms & Validation
+    "react-hook-form": "^7.49.0",
+    "yup": "^1.3.0",
+    
+    // Charts & Analytics
+    "recharts": "^2.10.0",
+    
+    // Date & Time
+    "date-fns": "^3.0.0",
+    
+    // File Upload
+    "react-dropzone": "^14.2.0",
+    
+    // Drag & Drop
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    
+    // Rich Text Editor
+    "react-quill": "^2.0.0",
+    
+    // Notifications
+    "react-toastify": "^9.1.0",
+    
+    // Utilities
+    "lodash-es": "^4.17.21",
+    "numeral": "^2.0.6",
+    "uuid": "^9.0.1",
+    
+    // Performance
+    "react-window": "^1.8.10",
+    "react-loading-skeleton": "^3.3.1",
+    
+    // Export Data
+    "xlsx": "^0.18.5",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0"
+  }
+}
+```
+
+---
+
+## 🎨 WHY THIS STACK FOR E-COMMERCE ADMIN?
+
+**Material-UI (MUI)**: Industry standard for professional admin panels
+- Complete component library (Tables, Forms, Modals, Dialogs)
+- Advanced Data Grid with sorting, filtering, pagination
+- Professional date/time pickers
+- Consistent design system
+- Used by: Shopify, Amazon Seller Central, BigCommerce
+
+**Tailwind CSS**: Rapid responsive design
+- Mobile-first responsive utilities
+- Fast custom styling
+- Works seamlessly with MUI
+
+**Recharts**: Best for e-commerce analytics
+- Sales charts, revenue graphs
+- Order trends, user growth
+- Lightweight and performant
+
+**React Query**: Smart data management
+- Automatic caching of product/order data
+- Background refetching
+- Optimistic updates
+
+---
+
+## 📱 RESPONSIVE DESIGN BREAKPOINTS
+
+```javascript
+// Tailwind breakpoints for admin panel
+const breakpoints = {
+  sm: '640px',   // Mobile landscape
+  md: '768px',   // Tablet
+  lg: '1024px',  // Desktop
+  xl: '1280px',  // Large desktop
+  '2xl': '1536px' // Extra large
+}
+```
+
+**Usage**:
+```jsx
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+  <StatCard title="Total Orders" value="1,234" />
+  <StatCard title="Revenue" value="₹45,678" />
+  <StatCard title="Products" value="567" />
+  <StatCard title="Users" value="8,901" />
+</div>
+```

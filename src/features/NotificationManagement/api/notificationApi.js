@@ -1,0 +1,1 @@
+import apiService from '../../../core/api/apiService'; export const sendBulkNotification = async (data) = const response = await apiService.post('/api/notifications/bulk', data); return response.data; }; 

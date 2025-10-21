@@ -1,66 +1,102 @@
 import React from 'react';
+import { Users, ShoppingCart, DollarSign, TrendingUp } from 'lucide-react';
 
-const OverviewStats = ({ stats }) => (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-    <div className="bg-white rounded-lg border border-yellow-400 p-5">
-      <h3 className="text-sm font-medium text-gray-700 mb-4">Total Users</h3>
-      <div className="space-y-3">
-        <div>
-          <p className="text-xs text-gray-500">Customers</p>
-          <p className="text-3xl font-bold text-blue-600">{stats.users.customers}</p>
+const OverviewStats = ({ stats }) => {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      {/* Users Card */}
+      <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl border border-blue-200 p-6 shadow-sm hover:shadow-md transition-all">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-blue-100 rounded-xl">
+            <Users className="h-6 w-6 text-blue-600" />
+          </div>
+          <div className="flex items-center bg-green-50 text-green-700 px-2 py-1 rounded-full text-sm">
+            <TrendingUp className="h-3 w-3 mr-1" />
+            +{stats.users.growth}%
+          </div>
         </div>
-        <div>
-          <p className="text-xs text-gray-500">Retailers</p>
-          <p className="text-3xl font-bold text-blue-600">{stats.users.retailers}</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Users</h3>
+        <p className="text-3xl font-bold text-gray-900 mb-2">{stats.users.customers + stats.users.retailers}</p>
+        <div className="flex justify-between text-sm text-gray-600">
+          <span>{stats.users.customers} Customers</span>
+          <span>{stats.users.retailers} Retailers</span>
+        </div>
+      </div>
+
+      {/* Orders Card */}
+      <div className="bg-gradient-to-br from-green-50 to-white rounded-xl border border-green-200 p-6 shadow-sm hover:shadow-md transition-all">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-green-100 rounded-xl">
+            <ShoppingCart className="h-6 w-6 text-green-600" />
+          </div>
+          <div className="text-sm text-gray-500">Total Orders</div>
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">{stats.orders.all}</h3>
+        <div className="grid grid-cols-2 gap-2 text-sm">
+          <div className="flex justify-between">
+            <span className="text-gray-600">Pending</span>
+            <span className="font-semibold text-yellow-600">{stats.orders.pending}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Processing</span>
+            <span className="font-semibold text-orange-600">{stats.orders.processing}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Delivered</span>
+            <span className="font-semibold text-green-600">{stats.orders.delivered}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-gray-600">Cancelled</span>
+            <span className="font-semibold text-red-600">{stats.orders.cancelled}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Revenue Card */}
+      <div className="bg-gradient-to-br from-purple-50 to-white rounded-xl border border-purple-200 p-6 shadow-sm hover:shadow-md transition-all">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-purple-100 rounded-xl">
+            <DollarSign className="h-6 w-6 text-purple-600" />
+          </div>
+          <div className="flex items-center bg-green-50 text-green-700 px-2 py-1 rounded-full text-sm">
+            <TrendingUp className="h-3 w-3 mr-1" />
+            +{stats.revenue.growth}%
+          </div>
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Revenue</h3>
+        <p className="text-3xl font-bold text-gray-900 mb-2">₹{stats.revenue.total.toLocaleString()}</p>
+        <div className="flex justify-between text-sm text-gray-600">
+          <span>Today: ₹{stats.revenue.today.toLocaleString()}</span>
+          <span>7 Days: ₹{stats.revenue.last7Days.toLocaleString()}</span>
+        </div>
+      </div>
+
+      {/* Performance Card */}
+      <div className="bg-gradient-to-br from-orange-50 to-white rounded-xl border border-orange-200 p-6 shadow-sm hover:shadow-md transition-all">
+        <div className="flex items-center justify-between mb-4">
+          <div className="p-3 bg-orange-100 rounded-xl">
+            <TrendingUp className="h-6 w-6 text-orange-600" />
+          </div>
+          <div className="text-sm text-gray-500">Performance</div>
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Avg. Order Value</span>
+            <span className="font-semibold text-gray-900">₹{(stats.revenue.total / stats.orders.all).toFixed(0)}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Conversion Rate</span>
+            <span className="font-semibold text-green-600">4.2%</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Return Rate</span>
+            <span className="font-semibold text-red-600">1.0%</span>
+          </div>
         </div>
       </div>
     </div>
-
-    <div className="bg-white rounded-lg border border-yellow-400 p-5">
-      <h3 className="text-sm font-medium text-gray-700 mb-4">Total Orders</h3>
-      <div className="space-y-2">
-        <div className="flex justify-between">
-          <span className="text-xs text-gray-500">All</span>
-          <span className="text-base font-semibold text-blue-600">{stats.orders.all}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs text-gray-500">Pending</span>
-          <span className="text-base font-semibold text-yellow-600">{stats.orders.pending}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs text-gray-500">Delivered</span>
-          <span className="text-base font-semibold text-green-600">{stats.orders.delivered}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs text-gray-500">Cancelled</span>
-          <span className="text-base font-semibold text-red-600">{stats.orders.cancelled}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs text-gray-500">Returned</span>
-          <span className="text-base font-semibold text-purple-600">{stats.orders.returned}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-xs text-gray-500">Processing</span>
-          <span className="text-base font-semibold text-orange-600">{stats.orders.processing}</span>
-        </div>
-      </div>
-    </div>
-
-    <div className="bg-white rounded-lg border border-yellow-400 p-5">
-      <h3 className="text-sm font-medium text-gray-700 mb-4">Total Revenue</h3>
-      <div className="space-y-3">
-        <p className="text-3xl font-bold text-green-600">₹{stats.revenue.total}</p>
-        <div>
-          <p className="text-xs text-gray-500">Last 7 Days</p>
-          <p className="text-xl font-bold text-green-600">₹{stats.revenue.last7Days}</p>
-        </div>
-        <div>
-          <p className="text-xs text-gray-500">Today</p>
-          <p className="text-xl font-bold text-green-600">₹{stats.revenue.today}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 export default OverviewStats;

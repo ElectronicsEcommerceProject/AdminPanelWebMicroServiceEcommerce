@@ -52,5 +52,17 @@
     "preview": "vite preview",
     "lint": "eslint src",
     "format": "prettier --write src"
-  }
+  },
+  "description": "This is the admin panel frontend for the Electronics Ecommerce platform built with React, Redux, and Material-UI.",
+  "main": "postcss.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElectronicsEcommerceProject/AdminPanelWebMicroServiceEcommerce.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElectronicsEcommerceProject/AdminPanelWebMicroServiceEcommerce/issues"
+  },
+  "homepage": "https://github.com/ElectronicsEcommerceProject/AdminPanelWebMicroServiceEcommerce#readme"
 }

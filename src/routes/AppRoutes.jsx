@@ -1,21 +1,12 @@
-/**
- * PURPOSE: Main routing configuration for the application
- * 
- * LOGIC:
- * - Import Routes, Route, Navigate from react-router-dom
- * - Import LoginPage, ProtectedRoute, AdminLayout
- * - Import all feature pages (Dashboard, Users, Products, Orders, etc.)
- * - Define route structure:
- *   - /login -> LoginPage (public route)
- *   - / -> Redirect to /dashboard
- *   - All other routes wrapped in ProtectedRoute and AdminLayout:
- *     - /dashboard -> DashboardPage
- *     - /users -> UserListPage, /users/:id -> UserDetailsPage
- *     - /products -> ProductListPage, /products/create -> ProductCreatePage
- *     - /orders -> OrderListPage, /orders/:id -> OrderDetailsPage
- *     - /payments, /promotions, /reviews, /inventory, /stores, /notifications
- *     - /banners, /cms, /rbac, /analytics, /reports
- * 
- * EXAMPLE:
- * User visits /dashboard -> Checks auth -> Shows AdminLayout with DashboardPage
- */
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<div style={{ padding: '20px' }}><h1>Admin Panel - Electronics Ecommerce</h1><p>Application is running on port 5173</p></div>} />
+    </Routes>
+  );
+}
+
+export default AppRoutes;

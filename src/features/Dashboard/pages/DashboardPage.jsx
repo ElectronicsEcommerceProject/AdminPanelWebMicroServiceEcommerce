@@ -1,38 +1,62 @@
-import React from 'react';
+// pages/DashboardPage.js (Updated layout to include all components and fill space)
+import React, { useState, useEffect } from 'react';
 import OverviewStats from '../components/OverviewStats';
-import SalesChart from '../components/SalesChart';
-import RevenueChart from '../components/RevenueChart';
 import LowStockAlert from '../components/LowStockAlert';
 import TopProducts from '../components/TopProducts';
 import RecentOrders from '../components/RecentOrders';
+import QuickActions from '../components/QuickActions';
+import RecentUsers from '../components/RecentUsers';
+import RevenueChart from '../components/RevenueChart';
+import SalesChart from '../components/SalesChart';
+import dashboardApi from '../api/dashboardApi';
 
 const DashboardPage = () => {
+  const [stats, setStats] = useState({
+    users: { customers: 0, retailers: 0 },
+    orders: { all: 0, pending: 0, delivered: 0, returned: 0, processing: 0, cancelled: 0 },
+    revenue: { total: 0, last7Days: 0, today: 0 }
+  });
+  const [alerts, setAlerts] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState({ customer: [], retailer: [] });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const statsData = await dashboardApi.getStats();
+      const alertsData = await dashboardApi.getLowStockAlerts();
+      const productsData = await dashboardApi.getTopProducts();
+      const ordersData = await dashboardApi.getRecentOrders();
+      
+      setStats(statsData);
+      setAlerts(alertsData);
+      setProducts(productsData);
+      setOrders(ordersData);
+    };
+    fetchData();
+  }, []);
+
   return (
-    <div className="space-y-4">
-      {/* Row 1: Overview cards */}
-      <OverviewStats />
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
+        <OverviewStats stats={stats} />
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <LowStockAlert alerts={alerts} />
+          <TopProducts products={products} />
+          <QuickActions />
+        </div>
 
-      {/* Row 1.5: Orders/Sales/Revenue charts (matching screenshot top row third card shows revenue) */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <SalesChart />
-        <RevenueChart />
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <RevenueChart />
+          <SalesChart />
+        </div>
 
-      {/* Row 2: Low stock, Top products, Quick actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <LowStockAlert />
-        <TopProducts />
-        <div className="border rounded-md shadow-sm p-4 border-yellow-300">
-          <h3 className="font-semibold mb-3">Quick Actions</h3>
-          <div className="space-y-2">
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm rounded py-2">Add Product</button>
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm rounded py-2">Create Coupon</button>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <RecentOrders orders={orders} />
+          <RecentUsers />
         </div>
       </div>
-
-      {/* Row 3: Latest Orders */}
-      <RecentOrders />
     </div>
   );
 };

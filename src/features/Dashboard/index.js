@@ -1,11 +1,11 @@
-/**
- * PURPOSE: Barrel export file for Dashboard feature
- * 
- * LOGIC:
- * - Export DashboardPage from pages folder
- * - Export all dashboard components: OverviewStats, RecentOrders, RecentUsers, SalesChart, RevenueChart, TopProducts, LowStockAlert
- * - Allows importing from single location: import { DashboardPage, OverviewStats } from './features/Dashboard'
- * 
- * EXAMPLE:
- * import { DashboardPage } from './features/Dashboard';
- */
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import DashboardPage from './pages/DashboardPage';
+import './index.css';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <DashboardPage />
+  </React.StrictMode>
+);

@@ -16,6 +16,8 @@ const queryClient = new QueryClient({
   },
 });
 
+// satyam
+
 function App() {
   return (
     <Provider store={store}>

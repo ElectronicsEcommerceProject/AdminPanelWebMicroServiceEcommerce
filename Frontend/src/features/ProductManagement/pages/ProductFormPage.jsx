@@ -16,11 +16,6 @@ import {
   InputLabel,
   FormControl,
   Select,
-  Chip,
-  Avatar,
-  LinearProgress,
-  Alert,
-  IconButton,
   Paper,
 } from "@mui/material";
 import {
@@ -28,28 +23,21 @@ import {
   ArrowForward as ArrowRight,
   Check,
   CloudUpload as Upload,
-  Close as X,
   ExpandMore,
 } from "@mui/icons-material";
 import {
   Search as LucideSearch,
   Plus as LucidePlus,
-  ChevronDown as LucideChevronDown,
-  X as LucideX,
 } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
+import { twMerge } from "tailwind-merge";
 
 const createApi = async (route, data) => {
   return { success: true, data };
 };
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
 
-/* -------------------------------------------------------------------------- */
-/*                               HELPERS                                      */
-/* -------------------------------------------------------------------------- */
 const generateSlug = (name) =>
   name
     .toLowerCase()
@@ -58,9 +46,6 @@ const generateSlug = (name) =>
 
 const getFilePreview = (file) => URL.createObjectURL(file);
 
-/* -------------------------------------------------------------------------- */
-/*                               SEARCHABLE DROPDOWN                           */
-/* -------------------------------------------------------------------------- */
 const SearchableDropdown = ({
   label,
   value,
@@ -75,14 +60,13 @@ const SearchableDropdown = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const selected = options.find((o) => o[valueKey] === value);
 
   const filtered = useMemo(() => {
     if (!search) return options;
     return options.filter((o) =>
       o[displayKey].toLowerCase().includes(search.toLowerCase())
     );
-  }, [options, search]);
+  }, [options, search, displayKey]);
 
   const handleCreate = () => {
     if (!search.trim()) return;
@@ -145,9 +129,6 @@ const SearchableDropdown = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               FILE DROPZONE                                 */
-/* -------------------------------------------------------------------------- */
 const FileDropzone = ({ onFile, label, accept, required, preview }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept,
@@ -186,9 +167,6 @@ const FileDropzone = ({ onFile, label, accept, required, preview }) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               STEP FORM COMPONENT                           */
-/* -------------------------------------------------------------------------- */
 const StepForm = ({
   config,
   localData,
@@ -246,7 +224,6 @@ const StepForm = ({
       />
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-          {/* Related Entities */}
           {config.relatedEntities.map((entity) => {
             const options = formData[entity].map((item) => ({
               id: item.id || item[`${entity.slice(0, -1)}_id`],
@@ -270,7 +247,6 @@ const StepForm = ({
             );
           })}
 
-          {/* Fields */}
           {config.fields.map((field) => {
             if (field.type === "file") {
               return (
@@ -323,7 +299,7 @@ const StepForm = ({
                     helperText={errors[field.name]?.message}
                     onChange={(e) => {
                       ctrl.onChange(e);
-                      if (field.name === "name" && ["name"].includes(field.name)) {
+                      if (field.name === "name") {
                         setValue("slug", generateSlug(e.target.value));
                       }
                     }}
@@ -355,9 +331,6 @@ const StepForm = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               REVIEW STEP                                   */
-/* -------------------------------------------------------------------------- */
 const ReviewStep = ({ stepData, onBack, onSave }) => {
   const [saving, setSaving] = useState(false);
 
@@ -433,10 +406,7 @@ const ReviewStep = ({ stepData, onBack, onSave }) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               MAIN COMPONENT                                */
-/* -------------------------------------------------------------------------- */
-const ProductCatalogManagement = () => {
+const ProductFormPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dashboardData = location.state?.dashboardData;
@@ -591,7 +561,7 @@ const ProductCatalogManagement = () => {
           <ReviewStep
             stepData={stepData}
             onBack={() => setStep(stepsConfig.length)}
-            onSave={() => navigate("/admin")}
+            onSave={() => navigate("/products")}
           />
         ) : (
           <StepForm
@@ -612,4 +582,4 @@ const ProductCatalogManagement = () => {
   );
 };
 
-export default ProductCatalogManagement;
+export default ProductFormPage;

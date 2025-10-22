@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useForm, Controller } from "react-hook-form";
 
 const mockData = {
   categories: [
@@ -74,13 +75,7 @@ const updateApiById = async (route, entityType, data) => {
 const deleteApiByCondition = async (route, id, entityType) => {
   return { success: true };
 };
-import clsx from "clsx";
-import { twMerge } from "tailwind-merge";
-import { useForm, Controller } from "react-hook-form";
 
-/* -------------------------------------------------------------------------- */
-/*                               CARD COMPONENT                               */
-/* -------------------------------------------------------------------------- */
 const EntityCard = ({
   title,
   rows,
@@ -197,9 +192,7 @@ const EntityCard = ({
             ]}
             getRowId={(row) => row.id}
             onRowClick={(params) => onRowClick(params.row)}
-            rowSelectionModel={
-              selectedRow ? [selectedRow.id] : []
-            }
+            rowSelectionModel={selectedRow ? [selectedRow.id] : []}
             disableRowSelectionOnClick={false}
             sx={{
               "& .MuiDataGrid-row:hover": { bgcolor: "action.hover" },
@@ -216,9 +209,6 @@ const EntityCard = ({
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               EDIT MODAL                                    */
-/* -------------------------------------------------------------------------- */
 const EditModal = ({ open, onClose, entityType, item, onSave }) => {
   const {
     control,
@@ -293,10 +283,7 @@ const EditModal = ({ open, onClose, entityType, item, onSave }) => {
   );
 };
 
-/* -------------------------------------------------------------------------- */
-/*                               MAIN COMPONENT                                 */
-/* -------------------------------------------------------------------------- */
-const ProductDashboard = () => {
+const ProductDashboardPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({
     categories: [],
@@ -316,9 +303,6 @@ const ProductDashboard = () => {
   const [activeFilters, setActiveFilters] = useState({});
   const [selected, setSelected] = useState({});
 
-  /* ---------------------------------------------------------------------- */
-  /*                               FETCH DATA                               */
-  /* ---------------------------------------------------------------------- */
   useEffect(() => {
     const fetchAll = async () => {
       setLoading(true);
@@ -387,9 +371,6 @@ const ProductDashboard = () => {
     fetchAll();
   }, []);
 
-  /* ---------------------------------------------------------------------- */
-  /*                               FILTER LOGIC                              */
-  /* ---------------------------------------------------------------------- */
   const applyFilters = (entity, item) => {
     const newFilters = { ...activeFilters, [entity]: item };
     const newSelected = { ...selected, [entity]: item };
@@ -490,9 +471,6 @@ const ProductDashboard = () => {
     setFiltered(data);
   };
 
-  /* ---------------------------------------------------------------------- */
-  /*                               CRUD HANDLERS                             */
-  /* ---------------------------------------------------------------------- */
   const handleAdd = (type) => {
     const map = {
       category: "categories",
@@ -518,7 +496,7 @@ const ProductDashboard = () => {
       return;
     }
 
-    navigate("/admin/product-form", {
+    navigate("/products/create", {
       state: { entityType: type, selectedItems: selected, dashboardData: data },
     });
   };
@@ -530,11 +508,7 @@ const ProductDashboard = () => {
   const handleSave = async (entityType, updated) => {
     setLoading(true);
     try {
-      const res = await updateApiById(
-        adminProductManagementDashboardDataRoute,
-        entityType,
-        updated
-      );
+      const res = await updateApiById("/api/products", entityType, updated);
       if (res?.success) {
         const key = entityType.toLowerCase() + "s";
         setData((prev) => ({
@@ -556,11 +530,7 @@ const ProductDashboard = () => {
     if (!window.confirm(`Delete this ${entityType}?`)) return;
     setLoading(true);
     try {
-      const res = await deleteApiByCondition(
-        adminProductManagementDashboardDataRoute,
-        id,
-        entityType
-      );
+      const res = await deleteApiByCondition("/api/products", id, entityType);
       if (res?.success) {
         const key = entityType.toLowerCase() + "s";
         setData((prev) => ({
@@ -578,9 +548,6 @@ const ProductDashboard = () => {
     }
   };
 
-  /* ---------------------------------------------------------------------- */
-  /*                               COLUMN DEFINITIONS                         */
-  /* ---------------------------------------------------------------------- */
   const columnDefs = {
     categories: [
       { field: "name", headerName: "Name", flex: 1 },
@@ -618,10 +585,7 @@ const ProductDashboard = () => {
           Product Management
         </Typography>
         <div className="flex gap-2">
-          <Button
-            variant="contained"
-            onClick={() => navigate("/admin/product-form")}
-          >
+          <Button variant="contained" onClick={() => navigate("/products/create")}>
             Add New Product
           </Button>
           <Button variant="outlined" onClick={resetAll}>
@@ -630,11 +594,7 @@ const ProductDashboard = () => {
         </div>
       </div>
 
-      {error && (
-        <Alert severity="error" className="mb-4">
-          {error}
-        </Alert>
-      )}
+      {error && <Alert severity="error" className="mb-4">{error}</Alert>}
 
       {loading ? (
         <Box display="flex" justifyContent="center" my={8}>
@@ -642,7 +602,6 @@ const ProductDashboard = () => {
         </Box>
       ) : (
         <Grid container spacing={3}>
-          {/* ----- Categories ----- */}
           <Grid item xs={12} md={6} lg={4}>
             <EntityCard
               title="Categories"
@@ -659,7 +618,6 @@ const ProductDashboard = () => {
             />
           </Grid>
 
-          {/* ----- Brands ----- */}
           <Grid item xs={12} md={6} lg={4}>
             <EntityCard
               title="Brands"
@@ -676,7 +634,6 @@ const ProductDashboard = () => {
             />
           </Grid>
 
-          {/* ----- Products ----- */}
           <Grid item xs={12} md={6} lg={4}>
             <EntityCard
               title="Products"
@@ -693,7 +650,6 @@ const ProductDashboard = () => {
             />
           </Grid>
 
-          {/* ----- Variants ----- */}
           <Grid item xs={12} md={6} lg={4}>
             <EntityCard
               title="Product Variants"
@@ -710,7 +666,6 @@ const ProductDashboard = () => {
             />
           </Grid>
 
-          {/* ----- Attribute Values ----- */}
           <Grid item xs={12} md={6} lg={4}>
             <EntityCard
               title="Attribute Values"
@@ -729,7 +684,6 @@ const ProductDashboard = () => {
         </Grid>
       )}
 
-      {/* ----- Edit Modal ----- */}
       <EditModal
         open={editModal.open}
         onClose={() => setEditModal({ open: false, entityType: "", item: null })}
@@ -741,4 +695,4 @@ const ProductDashboard = () => {
   );
 };
 
-export default ProductDashboard;
+export default ProductDashboardPage;

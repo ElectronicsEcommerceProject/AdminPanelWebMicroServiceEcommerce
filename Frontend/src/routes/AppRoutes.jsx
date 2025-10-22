@@ -14,7 +14,7 @@ function AppRoutes() {
       <Route path="/banners/create" element={<BannerManagement />} />
       <Route path="/banners/edit/:id" element={<BannerManagement />} />
       <Route path="/products" element={<CombinedProductManagement />} />
-      <Route path="/admin/product-form" element={<CombinedProductManagement />} />
+      <Route path="/products/create" element={<CombinedProductManagement />} />
     </Routes>
   );
 }

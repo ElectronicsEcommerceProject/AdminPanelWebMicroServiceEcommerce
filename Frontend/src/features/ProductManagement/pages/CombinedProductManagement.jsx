@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, Paper, Typography, Fade } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Fade } from "@mui/material";
 import { Dashboard as DashboardIcon, AddBox as AddBoxIcon } from "@mui/icons-material";
-import ProductDashboard from "./temp";
-import ProductCatalogManagement from "./temp1";
+import ProductDashboardPage from "./ProductDashboardPage";
+import ProductFormPage from "./ProductFormPage";
 
 const CombinedProductManagement = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -57,13 +57,13 @@ const CombinedProductManagement = () => {
       <Box className="max-w-[1920px] mx-auto">
         <Fade in={activeTab === 0} timeout={300}>
           <Box sx={{ display: activeTab === 0 ? "block" : "none" }}>
-            <ProductDashboard />
+            <ProductDashboardPage />
           </Box>
         </Fade>
 
         <Fade in={activeTab === 1} timeout={300}>
           <Box sx={{ display: activeTab === 1 ? "block" : "none" }}>
-            <ProductCatalogManagement />
+            <ProductFormPage />
           </Box>
         </Fade>
       </Box>

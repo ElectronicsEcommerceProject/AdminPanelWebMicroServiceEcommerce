@@ -1,7 +1,15 @@
 import React from 'react';
+import BannerForm from '../components/BannerForm';
 
-const BannerCreatePage = () => {
-  return <div><h1 className="text-2xl font-bold">Create Banner</h1></div>;
+const BannerCreatePage = ({ onSaveBanner, onCancel }) => {
+  return (
+    <div>
+      <BannerForm 
+        onSave={onSaveBanner}
+        onCancel={onCancel}
+      />
+    </div>
+  );
 };
 
 export default BannerCreatePage;

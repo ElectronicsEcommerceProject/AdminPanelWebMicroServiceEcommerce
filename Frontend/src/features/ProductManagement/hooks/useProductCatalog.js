@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { catalogApi } from '../api/productCatalogApi';
 import { toast } from 'react-toastify';
+import { mockData } from '../utils/constants';
 
 export const useProductCatalog = () => {
   const [categories, setCategories] = useState([]);
@@ -12,12 +12,14 @@ export const useProductCatalog = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await catalogApi.getCategories();
-      setCategories(response.data.data || []);
+      // Simulate API call with timeout
+      setTimeout(() => {
+        setCategories(mockData.categories || []);
+        setLoading(false);
+      }, 500);
     } catch (err) {
       setError(err.message);
       toast.error('Failed to fetch categories');
-    } finally {
       setLoading(false);
     }
   };
@@ -25,12 +27,13 @@ export const useProductCatalog = () => {
   const fetchBrands = async () => {
     try {
       setLoading(true);
-      const response = await catalogApi.getBrands();
-      setBrands(response.data.data || []);
+      setTimeout(() => {
+        setBrands(mockData.brands || []);
+        setLoading(false);
+      }, 500);
     } catch (err) {
       setError(err.message);
       toast.error('Failed to fetch brands');
-    } finally {
       setLoading(false);
     }
   };
@@ -38,12 +41,23 @@ export const useProductCatalog = () => {
   const fetchProducts = async (params = {}) => {
     try {
       setLoading(true);
-      const response = await catalogApi.getProducts(params);
-      setProducts(response.data.data || []);
+      setTimeout(() => {
+        let filteredProducts = mockData.products;
+        
+        if (params.search) {
+          filteredProducts = filteredProducts.filter(product =>
+            product.name.toLowerCase().includes(params.search.toLowerCase()) ||
+            product.category_name.toLowerCase().includes(params.search.toLowerCase()) ||
+            product.brand_name.toLowerCase().includes(params.search.toLowerCase())
+          );
+        }
+        
+        setProducts(filteredProducts || []);
+        setLoading(false);
+      }, 500);
     } catch (err) {
       setError(err.message);
       toast.error('Failed to fetch products');
-    } finally {
       setLoading(false);
     }
   };

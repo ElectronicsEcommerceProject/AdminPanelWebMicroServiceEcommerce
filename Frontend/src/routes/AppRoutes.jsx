@@ -7,6 +7,8 @@ import CombinedProductManagement from '../features/ProductManagement/pages/Combi
 import ProductListPage from '../features/ProductManagement/pages/ProductListPage';
 import ProductDetailsPage from '../features/ProductManagement/pages/ProductDetailsPage';
 import ProductEditPage from '../features/ProductManagement/pages/ProductEditPage';
+import ProductCreatePage from '../features/ProductManagement/pages/ProductCreatePage';
+// import StockManagementPage from '../features/StoreManagement';
 
 function AppRoutes() {
   return (
@@ -16,11 +18,19 @@ function AppRoutes() {
       <Route path="/banners" element={<BannerManagement />} />
       <Route path="/banners/create" element={<BannerManagement />} />
       <Route path="/banners/edit/:id" element={<BannerManagement />} />
+      
+      {/* Product Management Routes */}
       <Route path="/products" element={<ProductListPage />} />
-      <Route path="/products/create" element={<CombinedProductManagement />} />
+      <Route path="/products/create" element={<ProductCreatePage />} />
       <Route path="/products/:id" element={<ProductDetailsPage />} />
       <Route path="/products/edit/:id" element={<ProductEditPage />} />
       <Route path="/products/dashboard" element={<CombinedProductManagement />} />
+      
+      {/* Stock Management Route */}
+      {/* <Route path="/stock-management" element={<StockManagementPage />} /> */}
+      
+      {/* Redirect to products list as default product route */}
+      <Route path="/products/*" element={<Navigate to="/products" replace />} />
     </Routes>
   );
 }

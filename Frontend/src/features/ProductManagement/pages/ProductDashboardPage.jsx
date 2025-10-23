@@ -1,287 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Tooltip,
-  Chip,
   Box,
   CircularProgress,
   Alert,
   Button,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Search as SearchIcon,
-  FilterList as FilterIcon,
-  Clear as ClearIcon,
-} from "@mui/icons-material";
-import { DataGrid } from "@mui/x-data-grid";
-import {
-  Search as LucideSearch,
-  Plus as LucidePlus,
-  Filter as LucideFilter,
-  X as LucideX,
-} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useForm, Controller } from "react-hook-form";
-
-const mockData = {
-  categories: [
-    { category_id: 1, name: "Electronics", slug: "electronics", target_role: "both", product_ids: [1, 2] },
-    { category_id: 2, name: "Accessories", slug: "accessories", target_role: "customer", product_ids: [3] },
-  ],
-  brands: [
-    { brand_id: 1, name: "Samsung", slug: "samsung", product_ids: [1, 2] },
-    { brand_id: 2, name: "Apple", slug: "apple", product_ids: [3] },
-  ],
-  products: [
-    { product_id: 1, name: "Galaxy S23", slug: "galaxy-s23", description: "Flagship phone", base_price: 999, rating_average: 4.5, category_name: "Electronics", brand_name: "Samsung", category_id: 1, brand_id: 1 },
-    { product_id: 2, name: "Galaxy Tab", slug: "galaxy-tab", description: "Tablet", base_price: 599, rating_average: 4.2, category_name: "Electronics", brand_name: "Samsung", category_id: 1, brand_id: 1 },
-    { product_id: 3, name: "AirPods Pro", slug: "airpods-pro", description: "Wireless earbuds", base_price: 249, rating_average: 4.8, category_name: "Accessories", brand_name: "Apple", category_id: 2, brand_id: 2 },
-  ],
-  variants: [
-    { product_variant_id: 1, product_id: 1, product_name: "Galaxy S23", sku: "GS23-BLK-128", price: 999, description: "Black 128GB", stock_quantity: 50, discount_percentage: 10, discount_quantity: 5, min_retailer_quantity: 10, bulk_discount_percentage: 15, bulk_discount_quantity: 20 },
-    { product_variant_id: 2, product_id: 1, product_name: "Galaxy S23", sku: "GS23-WHT-256", price: 1099, description: "White 256GB", stock_quantity: 30, discount_percentage: 10, discount_quantity: 5, min_retailer_quantity: 10, bulk_discount_percentage: 15, bulk_discount_quantity: 20 },
-    { product_variant_id: 3, product_id: 3, product_name: "AirPods Pro", sku: "APP-WHT", price: 249, description: "White", stock_quantity: 100, discount_percentage: 5, discount_quantity: 3, min_retailer_quantity: 5, bulk_discount_percentage: 10, bulk_discount_quantity: 10 },
-  ],
-  attributeValues: [
-    { product_attribute_value_id: 1, attribute_name: "Color", value: "Black", product_ids: [1] },
-    { product_attribute_value_id: 2, attribute_name: "Storage", value: "128GB", product_ids: [1, 2] },
-    { product_attribute_value_id: 3, attribute_name: "Color", value: "White", product_ids: [3] },
-  ],
-};
-
-const getApi = async () => {
-  return { success: true, data: mockData };
-};
-
-const updateApiById = async (route, entityType, data) => {
-  return { success: true, data };
-};
-
-const deleteApiByCondition = async (route, id, entityType) => {
-  return { success: true };
-};
-
-const EntityCard = ({
-  title,
-  rows,
-  columns,
-  onAdd,
-  onEdit,
-  onDelete,
-  onRowClick,
-  activeFilter,
-  onClearFilter,
-  selectedRow,
-  searchPlaceholder,
-}) => {
-  const [search, setSearch] = useState("");
-
-  const filteredRows = useMemo(() => {
-    if (!search) return rows;
-    const term = search.toLowerCase();
-    return rows.filter((r) =>
-      Object.values(r).some(
-        (v) => v && v.toString().toLowerCase().includes(term)
-      )
-    );
-  }, [rows, search]);
-
-  return (
-    <Card raised className="h-full flex flex-col">
-      <CardHeader
-        title={
-          <div className="flex items-center justify-between">
-            <Typography
-              variant="h6"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-            >
-              {title}
-            </Typography>
-            <div className="flex items-center gap-2">
-              {activeFilter && (
-                <Chip
-                  label="Filtered"
-                  size="small"
-                  color="primary"
-                  onDelete={onClearFilter}
-                  deleteIcon={<LucideX className="w-4 h-4" />}
-                />
-              )}
-              <Tooltip title={`Add ${title.toLowerCase()}`}>
-                <IconButton
-                  onClick={onAdd}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700"
-                >
-                  <LucidePlus className="w-5 h-5" />
-                </IconButton>
-              </Tooltip>
-            </div>
-          </div>
-        }
-      />
-      <CardContent className="flex flex-col flex-1 gap-3 pb-3">
-        <TextField
-          fullWidth
-          size="small"
-          placeholder={searchPlaceholder}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LucideSearch className="w-5 h-5 text-gray-500" />
-              </InputAdornment>
-            ),
-          }}
-          variant="outlined"
-        />
-
-        <Box sx={{ flexGrow: 1, minHeight: 260 }}>
-          <DataGrid
-            rows={filteredRows}
-            columns={[
-              ...columns,
-              {
-                field: "actions",
-                headerName: "Actions",
-                width: 110,
-                sortable: false,
-                renderCell: (params) => (
-                  <div className="flex gap-1">
-                    <Tooltip title="Edit">
-                      <IconButton
-                        size="small"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onEdit(params.row.id, params.row);
-                        }}
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton
-                        size="small"
-                        color="error"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onDelete(params.row.id);
-                        }}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                ),
-              },
-            ]}
-            getRowId={(row) => row.id}
-            onRowClick={(params) => onRowClick(params.row)}
-            rowSelectionModel={selectedRow ? [selectedRow.id] : []}
-            disableRowSelectionOnClick={false}
-            sx={{
-              "& .MuiDataGrid-row:hover": { bgcolor: "action.hover" },
-              "& .MuiDataGrid-row.Mui-selected": {
-                bgcolor: "primary.50",
-                borderLeft: "4px solid",
-                borderColor: "primary.main",
-              },
-            }}
-          />
-        </Box>
-      </CardContent>
-    </Card>
-  );
-};
-
-const EditModal = ({ open, onClose, entityType, item, onSave }) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    defaultValues: item || {},
-  });
-
-  useEffect(() => {
-    reset(item || {});
-  }, [item, reset]);
-
-  const onSubmit = (data) => {
-    onSave(entityType, { ...item, ...data });
-    onClose();
-  };
-
-  if (!open) return null;
-
-  const fields = Object.keys(item || {}).filter(
-    (k) => !["_id", "id", "product_ids"].includes(k)
-  );
-
-  return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Edit {entityType}</DialogTitle>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent dividers>
-          {fields.map((key) => {
-            const label = key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
-            const isSelect = key === "target_role";
-
-            return (
-              <Controller
-                key={key}
-                name={key}
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    {...field}
-                    select={isSelect}
-                    label={label}
-                    fullWidth
-                    margin="dense"
-                    error={!!errors[key]}
-                    helperText={errors[key]?.message}
-                    SelectProps={{ native: true }}
-                  >
-                    {isSelect && (
-                      <>
-                        <option value="customer">Customer</option>
-                        <option value="retailer">Retailer</option>
-                        <option value="both">Both</option>
-                      </>
-                    )}
-                  </TextField>
-                )}
-              />
-            );
-          })}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained" disabled={isSubmitting}>
-            Save
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
-  );
-};
+import EntityCard from "../components/layout/EntityCard";
+import EditModal from "../components/ui/EditModal";
+import { mockData, getApi, updateApiById, deleteApiByCondition } from "../utils/constants";
 
 const ProductDashboardPage = () => {
   const navigate = useNavigate();
@@ -334,6 +64,7 @@ const ProductDashboardPage = () => {
               brand_name: p.brand_name,
               category_id: p.category_id,
               brand_id: p.brand_id,
+              target_role: p.target_role,
             })),
             variants: res.data.variants.map((v) => ({
               id: v.product_variant_id,
@@ -359,7 +90,7 @@ const ProductDashboardPage = () => {
           setData(transformed);
           setFiltered(transformed);
         } else {
-          throw new Error("API error");
+          throw new Error("Failed to load data");
         }
       } catch (err) {
         setError("Failed to load data");
@@ -515,9 +246,9 @@ const ProductDashboardPage = () => {
           ...prev,
           [key]: prev[key].map((i) => (i.id === updated.id ? { ...i, ...updated } : i)),
         }));
-        toast.success(`${entityType} updated`);
+        toast.success(`${entityType} updated successfully`);
       } else {
-        throw new Error(res?.message || "Update failed");
+        throw new Error("Update failed");
       }
     } catch (e) {
       toast.error(e.message || "Update failed");
@@ -527,7 +258,7 @@ const ProductDashboardPage = () => {
   };
 
   const handleDelete = async (entityType, id) => {
-    if (!window.confirm(`Delete this ${entityType}?`)) return;
+    if (!window.confirm(`Are you sure you want to delete this ${entityType}?`)) return;
     setLoading(true);
     try {
       const res = await deleteApiByCondition("/api/products", id, entityType);
@@ -537,9 +268,9 @@ const ProductDashboardPage = () => {
           ...prev,
           [key]: prev[key].filter((i) => i.id !== id),
         }));
-        toast.success(`${entityType} deleted`);
+        toast.success(`${entityType} deleted successfully`);
       } else {
-        throw new Error(res?.message || "Delete failed");
+        throw new Error("Delete failed");
       }
     } catch (e) {
       toast.error(e.message || "Delete failed");
@@ -561,15 +292,15 @@ const ProductDashboardPage = () => {
     products: [
       { field: "name", headerName: "Name", flex: 1 },
       { field: "slug", headerName: "Slug", flex: 1 },
-      { field: "base_price", headerName: "Price", width: 100, type: "number" },
-      { field: "rating_average", headerName: "Rating", width: 100, type: "number" },
+      { field: "base_price", headerName: "Price", width: 100, type: "number", renderCell: (params) => `₹${params.value}` },
+      { field: "rating_average", headerName: "Rating", width: 100, type: "number", renderCell: (params) => `${params.value} ⭐` },
     ],
     variants: [
       { field: "sku", headerName: "Variant", flex: 1 },
       { field: "product_name", headerName: "Product", flex: 1 },
-      { field: "price", headerName: "Price", width: 100, type: "number" },
+      { field: "price", headerName: "Price", width: 100, type: "number", renderCell: (params) => `₹${params.value}` },
       { field: "stock_quantity", headerName: "Stock", width: 100, type: "number" },
-      { field: "discount_percentage", headerName: "Disc %", width: 100, type: "number" },
+      { field: "discount_percentage", headerName: "Disc %", width: 100, type: "number", renderCell: (params) => `${params.value}%` },
       { field: "min_retailer_quantity", headerName: "Min Qty", width: 100, type: "number" },
     ],
     attributeValues: [
@@ -581,24 +312,36 @@ const ProductDashboardPage = () => {
   return (
     <div className="p-4 md:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-3">
-        <Typography variant="h5" className="font-bold">
-          Product Management
+        <Typography variant="h5" className="font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Product Dashboard
         </Typography>
         <div className="flex gap-2">
-          <Button variant="contained" onClick={() => navigate("/products/create")}>
+          <Button 
+            variant="contained" 
+            onClick={() => navigate("/products/create")}
+            className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg"
+          >
             Add New Product
           </Button>
-          <Button variant="outlined" onClick={resetAll}>
+          <Button 
+            variant="outlined" 
+            onClick={resetAll}
+            className="rounded-lg"
+          >
             Reset Filters
           </Button>
         </div>
       </div>
 
-      {error && <Alert severity="error" className="mb-4">{error}</Alert>}
+      {error && (
+        <Alert severity="error" className="mb-4 rounded-lg">
+          {error}
+        </Alert>
+      )}
 
       {loading ? (
-        <Box display="flex" justifyContent="center" my={8}>
-          <CircularProgress />
+        <Box display="flex" justifyContent="center" alignItems="center" my={8}>
+          <CircularProgress size={60} />
         </Box>
       ) : (
         <Grid container spacing={3}>

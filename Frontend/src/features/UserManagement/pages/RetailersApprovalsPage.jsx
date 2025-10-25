@@ -89,26 +89,26 @@ export default function RetailersApprovalsPage() {
 
       <div className="p-4 lg:p-8 max-w-[1600px] mx-auto">
         {/* Welcome Section */}
-        <div className="mb-8 animate-in fade-in slide-in-from-top duration-500">
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8 
+        <div className="mb-6 md:mb-8 animate-in fade-in slide-in-from-top duration-500">
+          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-4 md:p-8 
                         bg-gradient-to-r from-white/90 via-orange-50/50 to-red-50/50">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h1 className="text-4xl lg:text-5xl font-black text-transparent bg-clip-text 
-                             bg-gradient-to-r from-orange-600 to-red-600 mb-2 flex items-center gap-3">
+                <h1 className="text-2xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text 
+                             bg-gradient-to-r from-orange-600 to-red-600 mb-2 flex items-center gap-2 md:gap-3">
                   Retailer Approval Dashboard
-                  <Sparkles className="w-8 h-8 text-yellow-500 animate-pulse" />
+                  <Sparkles className="w-6 md:w-8 h-6 md:h-8 text-yellow-500 animate-pulse" />
                 </h1>
-                <p className="text-gray-600 text-lg">Manage new retailer account requests</p>
+                <p className="text-gray-600 text-sm md:text-lg">Manage new retailer account requests</p>
               </div>
               <button
                 onClick={() => window.location.reload()}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-indigo-600
-                         text-white rounded-xl hover:from-blue-600 hover:to-indigo-700
+                className="flex items-center gap-1.5 md:gap-2 px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-blue-500 to-indigo-600
+                         text-white rounded-xl hover:from-blue-600 hover:to-indigo-700 text-sm md:text-base
                          shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 font-semibold"
               >
-                <RefreshCw className="w-5 h-5" />
-                Refresh
+                <RefreshCw className="w-4 md:w-5 h-4 md:h-5" />
+                <span className="hidden sm:inline">Refresh</span>
               </button>
             </div>
           </div>

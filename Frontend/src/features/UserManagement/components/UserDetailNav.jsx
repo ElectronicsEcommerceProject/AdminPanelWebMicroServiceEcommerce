@@ -17,18 +17,18 @@ export default function UserDetailNav({ activeSection, setActiveSection, userRol
             <button
               key={item.id}
               onClick={() => setActiveSection(item.id)}
-              className={`w-full px-6 py-5 text-left flex items-center gap-4 transition-all duration-300
+              className={`w-full px-4 md:px-6 py-4 md:py-5 text-left flex items-center gap-3 md:gap-4 transition-all duration-300
                 ${activeSection === item.id 
                   ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg' 
                   : 'hover:bg-gray-50 text-gray-700 hover:translate-x-1'}
                 ${index > 0 ? 'border-t border-gray-100' : ''}`}
             >
-              <div className={`p-2 rounded-lg ${
+              <div className={`p-1.5 md:p-2 rounded-lg ${
                 activeSection === item.id ? 'bg-white/20' : 'bg-gray-100'
               }`}>
-                <Icon className="w-5 h-5" />
+                <Icon className="w-4 md:w-5 h-4 md:h-5" />
               </div>
-              <span className="font-semibold">{item.label}</span>
+              <span className="text-sm md:text-base font-semibold">{item.label}</span>
             </button>
           );
         })}

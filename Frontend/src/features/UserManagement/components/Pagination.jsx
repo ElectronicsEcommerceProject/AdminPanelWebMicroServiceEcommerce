@@ -30,34 +30,34 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 p-6">
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-600">
+    <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-white/50 p-4 md:p-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="text-xs md:text-sm text-gray-600">
           Showing page <span className="font-semibold text-gray-900">{currentPage}</span> of{' '}
           <span className="font-semibold text-gray-900">{totalPages}</span>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center justify-center gap-2">
           <button
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`p-2 rounded-xl transition-all duration-300 ${
+            className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 ${
               currentPage === 1
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:scale-105'
             }`}
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 md:w-5 h-4 md:h-5" />
           </button>
 
           {getPageNumbers().map((page, index) => (
             page === '...' ? (
-              <span key={`ellipsis-${index}`} className="px-3 text-gray-400">...</span>
+              <span key={`ellipsis-${index}`} className="px-2 md:px-3 text-gray-400 text-xs md:text-base">...</span>
             ) : (
               <button
                 key={page}
                 onClick={() => onPageChange(page)}
-                className={`min-w-[40px] h-10 rounded-xl font-semibold transition-all duration-300 ${
+                className={`min-w-[32px] md:min-w-[40px] h-8 md:h-10 rounded-xl text-xs md:text-base font-semibold transition-all duration-300 ${
                   currentPage === page
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg transform scale-110'
                     : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-blue-500 hover:to-indigo-600 hover:text-white hover:shadow-md'
@@ -71,13 +71,13 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
           <button
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`p-2 rounded-xl transition-all duration-300 ${
+            className={`p-1.5 md:p-2 rounded-xl transition-all duration-300 ${
               currentPage === totalPages
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700 shadow-lg hover:shadow-xl transform hover:scale-105'
             }`}
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 md:w-5 h-4 md:h-5" />
           </button>
         </div>
       </div>

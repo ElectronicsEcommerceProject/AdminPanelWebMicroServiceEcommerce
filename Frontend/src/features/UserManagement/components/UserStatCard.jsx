@@ -19,19 +19,19 @@ const UserStatCard = ({ icon: Icon, title, value, subtitle, gradient, shadowColo
   };
 
   return (
-    <div className={`group relative bg-white/80 backdrop-blur-xl rounded-2xl p-6 
+    <div className={`group relative bg-white/80 backdrop-blur-xl rounded-2xl p-4 md:p-6 
                     shadow-2xl ${shadowColor} hover:shadow-3xl 
                     transform hover:scale-105 transition-all duration-300 
                     border border-white/50 overflow-hidden`}>
       {/* Background Gradient Decoration */}
-      <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${gradient} 
+      <div className={`absolute top-0 right-0 w-24 md:w-32 h-24 md:h-32 bg-gradient-to-br ${gradient} 
                       opacity-10 blur-3xl group-hover:opacity-20 transition-opacity duration-500`} />
       
       <div className="relative z-10">
-        <div className="flex items-start justify-between mb-4">
-          <div className={`p-3 bg-gradient-to-br ${gradient} rounded-xl shadow-lg 
+        <div className="flex items-start justify-between mb-3 md:mb-4">
+          <div className={`p-2 md:p-3 bg-gradient-to-br ${gradient} rounded-xl shadow-lg 
                         group-hover:shadow-2xl transform group-hover:rotate-6 transition-all duration-300`}>
-            <Icon className="w-6 h-6 text-white" />
+            <Icon className="w-5 md:w-6 h-5 md:h-6 text-white" />
           </div>
           <div className="flex items-center gap-2">
             {badge && (
@@ -51,12 +51,12 @@ const UserStatCard = ({ icon: Icon, title, value, subtitle, gradient, shadowColo
         </div>
         
         <div className="space-y-1">
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className={`text-3xl font-black bg-gradient-to-r ${gradient} 
+          <p className="text-xs md:text-sm font-medium text-gray-500">{title}</p>
+          <p className={`text-2xl md:text-3xl font-black bg-gradient-to-r ${gradient} 
                       bg-clip-text text-transparent`}>
             {value}
           </p>
-          <p className="text-xs text-gray-400 font-medium">{subtitle}</p>
+          <p className="text-[10px] md:text-xs text-gray-400 font-medium">{subtitle}</p>
         </div>
       </div>
     </div>

@@ -9,9 +9,7 @@ import ProductDetailsPage from '../features/ProductManagement/pages/ProductDetai
 import ProductEditPage from '../features/ProductManagement/pages/ProductEditPage';
 import ProductCreatePage from '../features/ProductManagement/pages/ProductCreatePage';
 import StockManagementPage from '../features/StoreManagement';
-import UserDashboardPage from '../features/UserManagement/pages/UserDashboardPage';
-import UserListManagementPage from '../features/UserManagement/pages/UserListManagementPage';
-import RetailersApprovalsPage from '../features/UserManagement/pages/RetailersApprovalsPage';
+import { UserDashboardPage, UserListManagementPage, RetailersApprovalsPage } from '../features/UserManagement';
 
 function AppRoutes() {
   return (

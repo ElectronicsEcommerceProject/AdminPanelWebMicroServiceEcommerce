@@ -9,6 +9,9 @@ import ProductDetailsPage from '../features/ProductManagement/pages/ProductDetai
 import ProductEditPage from '../features/ProductManagement/pages/ProductEditPage';
 import ProductCreatePage from '../features/ProductManagement/pages/ProductCreatePage';
 import StockManagementPage from '../features/StoreManagement';
+import UserDashboardPage from '../features/UserManagement/pages/UserDashboardPage';
+import UserListManagementPage from '../features/UserManagement/pages/UserListManagementPage';
+import RetailersApprovalsPage from '../features/UserManagement/pages/RetailersApprovalsPage';
 
 function AppRoutes() {
   return (
@@ -28,6 +31,11 @@ function AppRoutes() {
       
       {/* Stock Management Route */}
       <Route path="/stock-management" element={<StockManagementPage />} />
+      
+      {/* User Management Routes */}
+      <Route path="/users" element={<UserDashboardPage />} />
+      <Route path="/users/list" element={<UserListManagementPage />} />
+      <Route path="/users/retailers-approvals" element={<RetailersApprovalsPage />} />
       
       {/* Redirect to products list as default product route */}
       <Route path="/products/*" element={<Navigate to="/products" replace />} />

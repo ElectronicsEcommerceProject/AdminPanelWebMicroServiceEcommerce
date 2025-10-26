@@ -1,2 +1,1 @@
-// NotificationManagement feature exports
-export default {};
+export { default as NotificationManagementPage } from './pages/NotificationManagementPage';

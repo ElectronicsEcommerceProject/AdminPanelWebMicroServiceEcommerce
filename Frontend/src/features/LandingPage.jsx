@@ -12,6 +12,7 @@ const LandingPage = () => {
     { path: '/stock-management', name: 'Stock Management', icon: '📋', description: 'Manage inventory and stock' },
     { path: '/users', name: 'User Management', icon: '👥', description: 'Manage users and accounts' },
     { path: '/reviews', name: 'Review Management', icon: '⭐', description: 'Moderate customer reviews' },
+    { path: '/coupons', name: 'Coupon Management', icon: '🎫', description: 'Create and manage discount coupons' },
   ];
 
   return (

@@ -11,6 +11,7 @@ import ProductCreatePage from '../features/ProductManagement/pages/ProductCreate
 import StockManagementPage from '../features/StoreManagement';
 import { UserDashboardPage, UserListManagementPage, RetailersApprovalsPage } from '../features/UserManagement';
 import { ReviewManagementPage } from '../features/ReviewManagement';
+import { CouponManagementPage } from '../features/CouponManagement';
 
 function AppRoutes() {
   return (
@@ -38,6 +39,9 @@ function AppRoutes() {
       
       {/* Review Management Route */}
       <Route path="/reviews" element={<ReviewManagementPage />} />
+      
+      {/* Coupon Management Route */}
+      <Route path="/coupons" element={<CouponManagementPage />} />
       
       {/* Redirect to products list as default product route */}
       <Route path="/products/*" element={<Navigate to="/products" replace />} />

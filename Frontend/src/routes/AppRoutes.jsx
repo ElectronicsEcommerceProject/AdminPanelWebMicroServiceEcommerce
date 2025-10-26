@@ -10,6 +10,7 @@ import ProductEditPage from '../features/ProductManagement/pages/ProductEditPage
 import ProductCreatePage from '../features/ProductManagement/pages/ProductCreatePage';
 import StockManagementPage from '../features/StoreManagement';
 import { UserDashboardPage, UserListManagementPage, RetailersApprovalsPage } from '../features/UserManagement';
+import { ReviewManagementPage } from '../features/ReviewManagement';
 
 function AppRoutes() {
   return (
@@ -34,6 +35,9 @@ function AppRoutes() {
       <Route path="/users" element={<UserDashboardPage />} />
       <Route path="/users/list" element={<UserListManagementPage />} />
       <Route path="/users/retailers-approvals" element={<RetailersApprovalsPage />} />
+      
+      {/* Review Management Route */}
+      <Route path="/reviews" element={<ReviewManagementPage />} />
       
       {/* Redirect to products list as default product route */}
       <Route path="/products/*" element={<Navigate to="/products" replace />} />

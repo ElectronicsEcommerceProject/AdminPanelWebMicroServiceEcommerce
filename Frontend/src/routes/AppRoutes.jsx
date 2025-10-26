@@ -12,6 +12,7 @@ import StockManagementPage from '../features/StoreManagement';
 import { UserDashboardPage, UserListManagementPage, RetailersApprovalsPage } from '../features/UserManagement';
 import { ReviewManagementPage } from '../features/ReviewManagement';
 import { CouponManagementPage } from '../features/CouponManagement';
+import { NotificationManagementPage } from '../features/NotificationManagement';
 
 function AppRoutes() {
   return (
@@ -42,6 +43,9 @@ function AppRoutes() {
       
       {/* Coupon Management Route */}
       <Route path="/coupons" element={<CouponManagementPage />} />
+      
+      {/* Notification Management Route */}
+      <Route path="/notifications" element={<NotificationManagementPage />} />
       
       {/* Redirect to products list as default product route */}
       <Route path="/products/*" element={<Navigate to="/products" replace />} />

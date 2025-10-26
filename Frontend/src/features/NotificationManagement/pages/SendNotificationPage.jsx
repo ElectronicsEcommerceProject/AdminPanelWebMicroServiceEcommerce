@@ -85,7 +85,7 @@ export default function SendNotificationPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                     {getChannelIcon(formData.channel)}
                     Delivery Channel
                   </label>
@@ -101,7 +101,7 @@ export default function SendNotificationPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-semibold text-gray-700 flex items-center gap-2">
+                  <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                     <Users className="w-5 h-5" />
                     Target Audience
                   </label>

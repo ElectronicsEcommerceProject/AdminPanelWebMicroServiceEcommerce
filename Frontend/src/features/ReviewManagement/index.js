@@ -1,2 +1,1 @@
-// ReviewManagement feature exports
-export default {};
+export { default as ReviewManagementPage } from './pages/ReviewManagementPage';

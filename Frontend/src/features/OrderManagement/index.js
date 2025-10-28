@@ -1,2 +1,1 @@
-// OrderManagement feature exports
-export default {};
+export { default as OrderManagementPage } from './pages/OrderManagementPage';

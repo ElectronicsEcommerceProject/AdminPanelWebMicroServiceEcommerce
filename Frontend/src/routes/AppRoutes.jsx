@@ -13,6 +13,7 @@ import { UserDashboardPage, UserListManagementPage, RetailersApprovalsPage } fro
 import { ReviewManagementPage } from '../features/ReviewManagement';
 import { CouponManagementPage } from '../features/CouponManagement';
 import { NotificationManagementPage } from '../features/NotificationManagement';
+import { OrderManagementPage } from '../features/OrderManagement';
 
 function AppRoutes() {
   return (
@@ -46,6 +47,9 @@ function AppRoutes() {
       
       {/* Notification Management Route */}
       <Route path="/notifications" element={<NotificationManagementPage />} />
+      
+      {/* Order Management Route */}
+      <Route path="/orders" element={<OrderManagementPage />} />
       
       {/* Redirect to products list as default product route */}
       <Route path="/products/*" element={<Navigate to="/products" replace />} />

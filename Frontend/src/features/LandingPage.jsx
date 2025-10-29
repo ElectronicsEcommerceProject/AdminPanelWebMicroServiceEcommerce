@@ -15,6 +15,7 @@ const LandingPage = () => {
     { path: '/reviews', name: 'Review Management', icon: '⭐', description: 'Moderate customer reviews' },
     { path: '/coupons', name: 'Coupon Management', icon: '🎫', description: 'Create and manage discount coupons' },
     { path: '/notifications', name: 'Notification Management', icon: '🔔', description: 'Manage templates and send notifications' },
+    { path: '/reports', name: 'Reports & Analytics', icon: '📈', description: 'View reports and analytics' },
   ];
 
   return (

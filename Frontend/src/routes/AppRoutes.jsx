@@ -14,6 +14,7 @@ import { ReviewManagementPage } from '../features/ReviewManagement';
 import { CouponManagementPage } from '../features/CouponManagement';
 import { NotificationManagementPage } from '../features/NotificationManagement';
 import { OrderManagementPage } from '../features/OrderManagement';
+import { ReportsOverviewPage } from '../features/ReportsAnalytics';
 
 function AppRoutes() {
   return (
@@ -50,6 +51,9 @@ function AppRoutes() {
       
       {/* Order Management Route */}
       <Route path="/orders" element={<OrderManagementPage />} />
+      
+      {/* Reports Analytics Routes */}
+      <Route path="/reports" element={<ReportsOverviewPage />} />
       
       {/* Redirect to products list as default product route */}
       <Route path="/products/*" element={<Navigate to="/products" replace />} />

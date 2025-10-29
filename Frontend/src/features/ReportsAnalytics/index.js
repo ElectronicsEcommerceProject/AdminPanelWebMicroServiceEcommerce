@@ -1,2 +1,1 @@
-// ReportsAnalytics feature exports
-export default {};
+export { default as ReportsOverviewPage } from './pages/ReportsOverviewPage';

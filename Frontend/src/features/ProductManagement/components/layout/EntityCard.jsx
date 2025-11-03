@@ -13,6 +13,7 @@ const EntityCard = ({
   onClearFilter,
   selectedRow,
   searchPlaceholder,
+  canAdd = true,
 }) => {
   const [search, setSearch] = useState("");
 
@@ -29,7 +30,7 @@ const EntityCard = ({
 
 
   return (
-    <div className="h-full flex flex-col bg-white rounded-xl sm:rounded-2xl shadow-xl border-2 border-blue-100 hover:shadow-2xl transition-all duration-300">
+    <div className="flex flex-col bg-white rounded-xl sm:rounded-2xl shadow-xl border-2 border-blue-100 hover:shadow-2xl transition-all duration-300">
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 sm:px-6 py-4 sm:py-5 rounded-t-xl sm:rounded-t-2xl">
         <div className="flex items-center justify-between">
           <h3 className="text-lg sm:text-xl font-bold text-white">{title}</h3>
@@ -45,8 +46,13 @@ const EntityCard = ({
             )}
             <button
               onClick={onAdd}
-              className="p-2 bg-white/20 backdrop-blur-xl text-white hover:bg-white/30 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
-              title={`Add ${title.toLowerCase()}`}
+              disabled={!canAdd}
+              className={`p-2 rounded-lg shadow-md transition-all duration-300 ${
+                canAdd
+                  ? 'bg-white/20 backdrop-blur-xl text-white hover:bg-white/30 hover:shadow-lg cursor-pointer'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed opacity-50'
+              }`}
+              title={canAdd ? `Add ${title.toLowerCase()}` : 'Select required items first'}
             >
               <Plus className="w-5 h-5" />
             </button>
@@ -54,7 +60,7 @@ const EntityCard = ({
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 gap-3 p-3 sm:p-4">
+      <div className="flex flex-col gap-3 p-3 sm:p-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
@@ -66,7 +72,7 @@ const EntityCard = ({
           />
         </div>
 
-        <div className="flex-1 overflow-auto rounded-lg border border-gray-200">
+        <div className="max-h-64 overflow-y-auto rounded-lg border border-gray-200">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200 sticky top-0">
               <tr>

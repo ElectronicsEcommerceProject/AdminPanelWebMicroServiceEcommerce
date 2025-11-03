@@ -103,10 +103,44 @@ const ProductDashboardPage = () => {
   }, []);
 
   const applyFilters = (entity, item) => {
-    const newFilters = { ...activeFilters, [entity]: item };
-    const newSelected = { ...selected, [entity]: item };
-    setActiveFilters(newFilters);
+    const newSelected = { ...selected };
+
+    if (entity === 'categories') {
+      newSelected.categories = item;
+      delete newSelected.brands;
+      delete newSelected.products;
+      delete newSelected.variants;
+      delete newSelected.attributeValues;
+    } else if (entity === 'brands') {
+      newSelected.brands = item;
+      delete newSelected.products;
+      delete newSelected.variants;
+      delete newSelected.attributeValues;
+    } else if (entity === 'products') {
+      const cat = data.categories.find((c) => c.id === item.category_id);
+      const brand = data.brands.find((b) => b.id === item.brand_id);
+      newSelected.categories = cat;
+      newSelected.brands = brand;
+      newSelected.products = item;
+      delete newSelected.variants;
+      delete newSelected.attributeValues;
+    } else if (entity === 'variants') {
+      const prod = data.products.find((p) => p.id === item.product_id);
+      if (prod) {
+        const cat = data.categories.find((c) => c.id === prod.category_id);
+        const brand = data.brands.find((b) => b.id === prod.brand_id);
+        newSelected.categories = cat;
+        newSelected.brands = brand;
+        newSelected.products = prod;
+      }
+      newSelected.variants = item;
+      delete newSelected.attributeValues;
+    } else if (entity === 'attributeValues') {
+      newSelected.attributeValues = item;
+    }
+
     setSelected(newSelected);
+    setActiveFilters({ [entity]: item });
 
     const filterMap = {
       categories: () => {
@@ -152,7 +186,20 @@ const ProductDashboardPage = () => {
       },
       variants: () => {
         const prod = data.products.find((p) => p.id === item.product_id);
-        if (prod) applyFilters("products", prod);
+        if (prod) {
+          const cat = data.categories.find((c) => c.id === prod.category_id);
+          const brand = data.brands.find((b) => b.id === prod.brand_id);
+          setFiltered((prev) => ({
+            ...prev,
+            categories: cat ? [cat] : [],
+            brands: brand ? [brand] : [],
+            products: [prod],
+            variants: data.variants.filter((v) => v.product_id === prod.id),
+            attributeValues: data.attributeValues.filter((a) =>
+              a.product_ids.includes(prod.id)
+            ),
+          }));
+        }
       },
       attributeValues: () => {
         const prodIds = item.product_ids || [];
@@ -202,33 +249,53 @@ const ProductDashboardPage = () => {
     setFiltered(data);
   };
 
+  const canAddEntity = (type) => {
+    const hierarchy = ['categories', 'brands', 'products', 'variants', 'attributeValues'];
+    const typeMap = {
+      category: 'categories',
+      brand: 'brands',
+      product: 'products',
+      variant: 'variants',
+      'attribute-value': 'attributeValues',
+    };
+    
+    const currentEntity = typeMap[type];
+    const currentIndex = hierarchy.indexOf(currentEntity);
+    
+    const lastSelectedIndex = hierarchy.reduce((maxIdx, entity, idx) => {
+      return selected[entity] ? idx : maxIdx;
+    }, -1);
+    
+    return currentIndex === lastSelectedIndex + 1;
+  };
+
   const handleAdd = (type) => {
-    const map = {
-      category: "categories",
-      brand: "brands",
-      product: "products",
-      variant: "variants",
-      "attribute-value": "attributeValues",
-    };
-    const entity = map[type];
-    if (!entity) return;
+    if (!canAddEntity(type)) return;
 
-    const required = {
-      categories: null,
-      brands: ["categories"],
-      products: ["brands"],
-      variants: ["products"],
-      attributeValues: ["products", "variants"],
-    };
-
-    const missing = required[entity]?.find((e) => !activeFilters[e]);
-    if (missing) {
-      toast.info(`Select a ${missing} first`);
-      return;
+    const selectedItems = { ...selected };
+    
+    if (type === 'variant' && selected.products) {
+      const product = selected.products;
+      if (!selectedItems.categories && product.category_id) {
+        selectedItems.categories = data.categories.find(c => c.id === product.category_id);
+      }
+      if (!selectedItems.brands && product.brand_id) {
+        selectedItems.brands = data.brands.find(b => b.id === product.brand_id);
+      }
+    }
+    
+    if (type === 'attribute-value' && selected.products) {
+      const product = selected.products;
+      if (!selectedItems.categories && product.category_id) {
+        selectedItems.categories = data.categories.find(c => c.id === product.category_id);
+      }
+      if (!selectedItems.brands && product.brand_id) {
+        selectedItems.brands = data.brands.find(b => b.id === product.brand_id);
+      }
     }
 
     navigate("/products/create", {
-      state: { entityType: type, selectedItems: selected, dashboardData: data },
+      state: { entityType: type, selectedItems, dashboardData: data },
     });
   };
 
@@ -344,87 +411,82 @@ const ProductDashboardPage = () => {
           <CircularProgress size={60} />
         </Box>
       ) : (
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={4}>
-            <EntityCard
-              title="Categories"
-              rows={filtered.categories}
-              columns={columnDefs.categories}
-              searchPlaceholder="Search categories..."
-              onAdd={() => handleAdd("category")}
-              onEdit={(id, row) => handleEdit("Categories", id, row)}
-              onDelete={(id) => handleDelete("Categories", id)}
-              onRowClick={(row) => applyFilters("categories", row)}
-              activeFilter={activeFilters.categories}
-              onClearFilter={() => clearFilter("categories")}
-              selectedRow={selected.categories}
-            />
-          </Grid>
+        <div className="space-y-4">
+          <EntityCard
+            title="Categories"
+            rows={filtered.categories}
+            columns={columnDefs.categories}
+            searchPlaceholder="Search categories..."
+            onAdd={() => handleAdd("category")}
+            onEdit={(id, row) => handleEdit("Categories", id, row)}
+            onDelete={(id) => handleDelete("Categories", id)}
+            onRowClick={(row) => applyFilters("categories", row)}
+            activeFilter={activeFilters.categories}
+            onClearFilter={() => clearFilter("categories")}
+            selectedRow={selected.categories}
+            canAdd={canAddEntity("category")}
+          />
 
-          <Grid item xs={12} md={6} lg={4}>
-            <EntityCard
-              title="Brands"
-              rows={filtered.brands}
-              columns={columnDefs.brands}
-              searchPlaceholder="Search brands..."
-              onAdd={() => handleAdd("brand")}
-              onEdit={(id, row) => handleEdit("Brands", id, row)}
-              onDelete={(id) => handleDelete("Brands", id)}
-              onRowClick={(row) => applyFilters("brands", row)}
-              activeFilter={activeFilters.brands}
-              onClearFilter={() => clearFilter("brands")}
-              selectedRow={selected.brands}
-            />
-          </Grid>
+          <EntityCard
+            title="Brands"
+            rows={filtered.brands}
+            columns={columnDefs.brands}
+            searchPlaceholder="Search brands..."
+            onAdd={() => handleAdd("brand")}
+            onEdit={(id, row) => handleEdit("Brands", id, row)}
+            onDelete={(id) => handleDelete("Brands", id)}
+            onRowClick={(row) => applyFilters("brands", row)}
+            activeFilter={activeFilters.brands}
+            onClearFilter={() => clearFilter("brands")}
+            selectedRow={selected.brands}
+            canAdd={canAddEntity("brand")}
+          />
 
-          <Grid item xs={12} md={6} lg={4}>
-            <EntityCard
-              title="Products"
-              rows={filtered.products}
-              columns={columnDefs.products}
-              searchPlaceholder="Search products..."
-              onAdd={() => handleAdd("product")}
-              onEdit={(id, row) => handleEdit("Products", id, row)}
-              onDelete={(id) => handleDelete("Products", id)}
-              onRowClick={(row) => applyFilters("products", row)}
-              activeFilter={activeFilters.products}
-              onClearFilter={() => clearFilter("products")}
-              selectedRow={selected.products}
-            />
-          </Grid>
+          <EntityCard
+            title="Products"
+            rows={filtered.products}
+            columns={columnDefs.products}
+            searchPlaceholder="Search products..."
+            onAdd={() => handleAdd("product")}
+            onEdit={(id, row) => handleEdit("Products", id, row)}
+            onDelete={(id) => handleDelete("Products", id)}
+            onRowClick={(row) => applyFilters("products", row)}
+            activeFilter={activeFilters.products}
+            onClearFilter={() => clearFilter("products")}
+            selectedRow={selected.products}
+            canAdd={canAddEntity("product")}
+          />
 
-          <Grid item xs={12} md={6} lg={4}>
-            <EntityCard
-              title="Product Variants"
-              rows={filtered.variants}
-              columns={columnDefs.variants}
-              searchPlaceholder="Search variants..."
-              onAdd={() => handleAdd("variant")}
-              onEdit={(id, row) => handleEdit("Variants", id, row)}
-              onDelete={(id) => handleDelete("Variants", id)}
-              onRowClick={(row) => applyFilters("variants", row)}
-              activeFilter={activeFilters.variants}
-              onClearFilter={() => clearFilter("variants")}
-              selectedRow={selected.variants}
-            />
-          </Grid>
+          <EntityCard
+            title="Product Variants"
+            rows={filtered.variants}
+            columns={columnDefs.variants}
+            searchPlaceholder="Search variants..."
+            onAdd={() => handleAdd("variant")}
+            onEdit={(id, row) => handleEdit("Variants", id, row)}
+            onDelete={(id) => handleDelete("Variants", id)}
+            onRowClick={(row) => applyFilters("variants", row)}
+            activeFilter={activeFilters.variants}
+            onClearFilter={() => clearFilter("variants")}
+            selectedRow={selected.variants}
+            canAdd={canAddEntity("variant")}
+          />
 
-          <Grid item xs={12} md={6} lg={4}>
-            <EntityCard
-              title="Attribute Values"
-              rows={filtered.attributeValues}
-              columns={columnDefs.attributeValues}
-              searchPlaceholder="Search attribute values..."
-              onAdd={() => handleAdd("attribute-value")}
-              onEdit={(id, row) => handleEdit("AttributeValues", id, row)}
-              onDelete={(id) => handleDelete("AttributeValues", id)}
-              onRowClick={(row) => applyFilters("attributeValues", row)}
-              activeFilter={activeFilters.attributeValues}
-              onClearFilter={() => clearFilter("attributeValues")}
-              selectedRow={selected.attributeValues}
-            />
-          </Grid>
-        </Grid>
+          <EntityCard
+            title="Attribute Values"
+            rows={filtered.attributeValues}
+            columns={columnDefs.attributeValues}
+            searchPlaceholder="Search attribute values..."
+            onAdd={() => handleAdd("attribute-value")}
+            onEdit={(id, row) => handleEdit("AttributeValues", id, row)}
+            onDelete={(id) => handleDelete("AttributeValues", id)}
+            onRowClick={(row) => applyFilters("attributeValues", row)}
+            activeFilter={activeFilters.attributeValues}
+            onClearFilter={() => clearFilter("attributeValues")}
+            selectedRow={selected.attributeValues}
+            canAdd={canAddEntity("attribute-value")}
+          />
+        </div>
       )}
 
       <EditModal

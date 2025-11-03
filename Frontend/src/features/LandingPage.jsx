@@ -8,6 +8,7 @@ const LandingPage = () => {
   const routes = [
     { path: '/dashboard', name: 'Dashboard', icon: '📊', description: 'View analytics and insights' },
     { path: '/banners', name: 'Banners', icon: '🎨', description: 'Manage banner content' },
+    { path: '/products', name: 'Product Management', icon: '📦', description: 'Create and manage products efficiently' },
   ];
 
   return (
